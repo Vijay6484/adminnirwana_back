@@ -20,45 +20,61 @@ cron.schedule('0 2 * * *', async () => {
 });
 
 // GET /admin/calendar/blocked-dates
+// GET all blocked dates
 router.get('/blocked-dates', async (req, res) => {
   console.log('Fetching blocked dates');
+
   try {
     const [rows] = await pool.execute(`
       SELECT 
         bd.id, 
-        bd.blocked_date, 
+        DATE_FORMAT(bd.blocked_date, '%Y-%m-%d') AS blocked_date,
         bd.reason, 
         bd.accommodation_id, 
         bd.rooms,
         a.name AS accommodation_name,
         bd.adult_price,
-        bd.child_price
+        bd.child_price,
+        bd.created_at,
+        bd.updated_at
       FROM blocked_dates bd
       LEFT JOIN accommodations a ON bd.accommodation_id = a.id
       ORDER BY bd.blocked_date DESC
     `);
-    res.json({ success: true, data: rows });
+
+    const formattedRows = rows.map(r => ({
+  ...r,
+  rooms: r.rooms !== null ? r.rooms.toString() : "0",
+  reason: r.reason || "",
+  created_at: r.created_at ? r.created_at.toLocaleString('en-GB', { hour12: false }) : null,
+  updated_at: r.updated_at ? r.updated_at.toLocaleString('en-GB', { hour12: false }) : null
+}));
+
+    res.json({ success: true, data: formattedRows });
   } catch (error) {
     console.error('Error fetching blocked dates:', error);
     res.status(500).json({ success: false, message: 'Failed to fetch blocked dates' });
   }
 });
 
-
+// GET blocked dates by accommodation_id
 router.get('/blocked-dates/:id', async (req, res) => {
-  const  accommodation_id  = req.params.id;
+  const accommodation_id = req.params.id;
   console.log('Fetching blocked dates for accommodation_id:', accommodation_id);
+
   try {
     let query = `
       SELECT
         bd.id,
-        bd.blocked_date,
+        DATE_FORMAT(bd.blocked_date, '%Y-%m-%d') AS blocked_date,
         bd.reason,
         bd.accommodation_id,
         bd.rooms,
         a.name AS accommodation_name,
         bd.adult_price,
-        bd.child_price
+        bd.child_price,
+        bd.created_at,
+        bd.updated_at
       FROM blocked_dates bd
       LEFT JOIN accommodations a ON bd.accommodation_id = a.id
     `;
@@ -68,8 +84,18 @@ router.get('/blocked-dates/:id', async (req, res) => {
       params.push(accommodation_id);
     }
     query += ` ORDER BY bd.blocked_date DESC`;
+
     const [rows] = await pool.execute(query, params);
-    res.json({ success: true, data: rows });
+
+    const formattedRows = rows.map(r => ({
+  ...r,
+  rooms: r.rooms !== null ? r.rooms.toString() : "0",
+  reason: r.reason || "",
+  created_at: r.created_at ? r.created_at.toLocaleString('en-GB', { hour12: false }) : null,
+  updated_at: r.updated_at ? r.updated_at.toLocaleString('en-GB', { hour12: false }) : null
+}));
+
+    res.json({ success: true, data: formattedRows });
   } catch (error) {
     console.error('Error fetching blocked dates:', error);
     res.status(500).json({ success: false, message: 'Failed to fetch blocked dates' });
@@ -77,33 +103,48 @@ router.get('/blocked-dates/:id', async (req, res) => {
 });
 
 
+
 // POST /admin/calendar/blocked-dates
+// POST /blocked-dates
 router.post('/blocked-dates', async (req, res) => {
   try {
     const { dates, reason, accommodation_id, room_number, adult_price, child_price } = req.body;
-    
-    console.log('Blocking dates:', { 
-      dates, 
-      reason, 
-      accommodation_id, 
+
+    console.log('Blocking dates:', {
+      dates,
+      reason,
+      accommodation_id,
       room_number,
-      adult_price, 
-      child_price 
+      adult_price,
+      child_price
     });
-    
+
     if (!dates || !Array.isArray(dates) || dates.length === 0) {
       return res.status(400).json({ success: false, message: 'No dates provided' });
     }
-    
-    for (const date of dates) {
-      await pool.execute(
-        // Changed room_number to rooms in query
-        `INSERT INTO blocked_dates (blocked_date, reason, accommodation_id, rooms, adult_price, child_price)
-         VALUES (?, ?, ?, ?, ?, ?)`,
-        [date, reason, accommodation_id, String(room_number), adult_price, child_price]
-      );
-    }
-    
+
+    const now = new Date(); // Node-generated timestamp
+
+    const values = dates.map(date => [
+      date,
+      reason,
+      accommodation_id,
+      String(room_number),
+      adult_price,
+      child_price,
+      now,
+      now
+    ]);
+
+    const placeholders = values.map(() => "(?, ?, ?, ?, ?, ?, ?, ?)").join(", ");
+
+    await pool.execute(
+      `INSERT INTO blocked_dates 
+       (blocked_date, reason, accommodation_id, rooms, adult_price, child_price, created_at, updated_at)
+       VALUES ${placeholders}`,
+      values.flat()
+    );
+
     res.json({ success: true });
   } catch (error) {
     console.error('Error blocking dates:', error);
@@ -111,20 +152,25 @@ router.post('/blocked-dates', async (req, res) => {
   }
 });
 
-// PUT /admin/calendar/blocked-dates/:id
+// PUT /blocked-dates/:id
 router.put('/blocked-dates/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { reason, accommodation_id, room_number, adult_price, child_price } = req.body;
-    
-    await pool.execute(
-      // Changed room_number to rooms in query
+
+    const now = new Date(); // Node-generated timestamp for update
+
+    const [result] = await pool.execute(
       `UPDATE blocked_dates 
-       SET reason=?, accommodation_id=?, rooms=?, adult_price=?, child_price=?
+       SET reason=?, accommodation_id=?, rooms=?, adult_price=?, child_price=?, updated_at=? 
        WHERE id=?`,
-      [reason, accommodation_id, room_number, adult_price, child_price, id]
+      [reason, accommodation_id, String(room_number), adult_price, child_price, now, id]
     );
-    
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ success: false, message: 'Blocked date not found' });
+    }
+
     res.json({ success: true });
   } catch (error) {
     console.error('Error updating blocked date:', error);
