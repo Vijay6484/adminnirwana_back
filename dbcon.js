@@ -7,7 +7,7 @@ const activeConnections = new Set();
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'in-mum-web1671.main-hosting.eu',
   user: process.env.DB_USER || 'u774474676_nirwanastays',
-  password:'Nirwana6484@#',
+  password:process.env.DB_PASSWORD||'Nirwana6484@',
   database: process.env.DB_NAME || 'u774474676_nirwana',
   port: parseInt(process.env.DB_PORT || '3306'),
   
