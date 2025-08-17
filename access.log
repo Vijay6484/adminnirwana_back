@@ -1043,3 +1043,8 @@
 ::1 - - [14/Jul/2025:10:21:54 +0000] "GET /admin/calendar/blocked-dates/5 HTTP/1.1" 200 417 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
 ::1 - - [14/Jul/2025:10:21:55 +0000] "GET /admin/calendar/blocked-dates/5 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
 ::1 - - [14/Jul/2025:10:21:55 +0000] "GET /admin/calendar/blocked-dates/5 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+::1 - - [17/Aug/2025:09:41:06 +0000] "GET / HTTP/1.1" 503 70 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0"
+::1 - - [17/Aug/2025:09:41:07 +0000] "GET /favicon.ico HTTP/1.1" 503 70 "http://localhost:5000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0"
+::1 - - [17/Aug/2025:17:30:12 +0000] "GET / HTTP/1.1" 404 111 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0"
+::1 - - [17/Aug/2025:17:30:12 +0000] "GET /favicon.ico HTTP/1.1" 404 122 "http://localhost:5000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0"
+::1 - - [17/Aug/2025:17:30:18 +0000] "GET /admin/calendar/blocked-dates HTTP/1.1" 200 4919 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0"
