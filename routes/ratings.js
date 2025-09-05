@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../dbcon');
-
-// GET /admin/ratings - fetch all ratings
 router.get('/', async (req, res) => {
   try {
     const [rows] = await pool.execute(

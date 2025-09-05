@@ -18,19 +18,17 @@ const { v4: uuidv4 } = require("uuid");
 
 require("dotenv").config();
 
-const payu_key = process.env.PAYU_MERCHANT_KEY || rFrruE9E; //process.env.PAYU_MERCHANT_KEY;
+const payu_key = process.env.PAYU_MERCHANT_KEY ||"n5ikm0"; //process.env.PAYU_MERCHANT_KEY;
 
-const payu_salt = process.env.PAYU_MERCHANT_SALT || DvYeVsKfYU;
+const payu_salt = process.env.PAYU_MERCHANT_SALT||"diKKGjJv3yODMXnmPF48WXaQLWoBJaD2";
 
 // "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCS2TYPoivPA9qOZW+c+evpYJGF9I6Ti/FVL3+3AyEImmWr9kd8NXRnWkRw79JmzJ+wUL1HkuloTCEvOcnoN16sd2bQ3n4j2WRca0QkHbx4JougH3NKfUkVIo2n21xlaxu9xiIjMZF1OQbNhMJfid/vP7FSaUhLdN46aWvyjxohK30IRvGnXbOH3666UtJXDSvebtrClLfUdX/9zOXLUU45vncGyCtylNiADLW5dMR5EkB8vQwpFXbQ+79LG9RRSDD8yCIJbd8Z4EB5gt1rQwdiUeV2T45ncSETFNKudUtwt/SxffzQPH5qDiyU2D35Cc5lUQQmELjK9aLYI/ge6ss1AgMBAAECggEAFxolc2GttzBxxIeoPr+hsdIvqq2N9Z/lPGPP2ZScMIyLtLk2x09oi+7rSAIurV4BPF2DXZx67F3XtaSHg2kck5DoQ7FREmY7r/9vFah480ULH8p62ovpwLGyK+dqeokWcO1YBwXgDptFWvVJF/sql+rDBIZMKZTN9k4J/buuHmwKQEqOowUBQWP1oo0Sgrnv48nQqlPfGatxq7U4w4hRLf3l6UR0c/mPHVb00UabBaZzZ9B/jMMasHDtLKYQ/69VtCo2QVm9Kykh3bRHKjiAF5f606gHiewILi3jj+lcnUrcDL1pFkBqskrJ8NibHfdJkaT1w3W1n463cLfCCntD2QKBgQC67h1lGo3avoB4GdoGMzqsDg9Bub0FpI2/lnL5oeFgygRvYRBb78E3fUKuYIWcUjiZaTgukIsMtZKPEpv90tJXua5dQEOOip9D4SQddHoT7MNToFFKJ5pXzHonc8dSMQYLV3LeR1V/9inJhrRPjedhr1jdJBMLZIAOe/mZBDh8CQKBgQDJG7zPL0sua6WkX6lLX0JydmEjbOFedeL2olY3pm8Vj0iC1ejUzsYrRwHEc1YUr2bO0NQ0uQ64dLhl+AXu2HwCWu7aRKMas0lg4uFemcmerqUMd1ozJJfI3fhjfSaFXwSqn5LcclUCXt/LOx49cxN9HmPHYNpyvV+P17gchIG4zQKBgCL95+rBKcTE3G+fBz0Z4eXLS/fVuRiRUSeIFkW8k9/2cRYYaWOMYfLtM8pIrzov+gBdvfKZhC4A30qBBUpiaJWbYJR8LylDscSXJJeO8jtAmt/QpubmuvGsiUFRXwJ3wtXkrNAHMm4dunzLBn3N5n5WwJ/E3PvI+F+9vV9zds9hAoGAdz5eHo8RSe4EIkmibRGHqaztff7SRpspv0mUS50A4sy5lvJVAtG0CPcqYhxtHwi9scV6/eP4iYCT0cpVYkC0jwTx+TOXbn599Nex/9C6Dr/JF3IxZn+9DBopbHxJee1ULANAJjwYkbZFhhCAprj0Bk0dppuUC1KkNfsXrLkY3cUCgYAYdRxY9KFg97jhRyD25LKTHbLyp5+rd53UxxNM5GGaxwHCe0FPj9jTD9x6NoGIg1cLDeaTIy20a4cDJx5v50yrMFvnbIMCcQ4nm71GfXUtO53O/k4ptTk9jVlM8ymJ/kK0956OODrrCTz/4Sur4+11gkd1LAw+MfKHZ8gtWrswPQ=="; //process.env.PAYU_MERCHANT_SALT;
 
-const PAYU_BASE_URL = process.env.PAYU_BASE_URL || "https://secure.payu.in"; // process.env.PAYU_BASE_URL||'https://secure.payu.in';
+const PAYU_BASE_URL =process.env.PAYU_BASE_URL || "https://test.payu.in"  //'https://secure.payu.in';
 
-const FRONTEND_BASE_URL =
-  process.env.FRONTEND_BASE_URL || "https://plumeriaretreat.vercel.app";
+const FRONTEND_BASE_URL =process.env.FRONTEND_BASE_URL || "https://nirwanastays.vercel.app";
 
-const ADMIN_BASE_URL =
-  process.env.ADMIN_BASE_URL || "https://adminplumeria-back.onrender.com";
+const ADMIN_BASE_URL =process.env.ADMIN_BASE_URL || "https://adminnirwana-back-1.onrender.com";
 
 // BOOKING CLEANUP JOB
 
@@ -605,107 +603,93 @@ router.delete('/delete/:id', async (req, res) => {
   }
 });
 
-
 router.post("/payments/payu", async (req, res) => {
   try {
-    const { amount, firstname, email, phone, booking_id, productinfo } =
-      req.body;
+    const { amount, firstname, email, phone, booking_id, productinfo } = req.body;
 
+    // --- Validation ---
     if (!amount || !firstname || !email || !booking_id || !productinfo) {
-      return res
-        .status(400)
-        .json({ success: false, error: "Missing required payment parameters" });
+      return res.status(400).json({ success: false, error: "Missing required payment parameters" });
     }
 
-    if (isNaN(amount) || amount <= 0) {
+    const numericAmount = parseFloat(amount);
+    if (isNaN(numericAmount) || numericAmount <= 0) {
       return res.status(400).json({ success: false, error: "Invalid amount" });
     }
+    const formattedAmount = numericAmount.toFixed(2); // PayU requires "100.00"
 
     const cleanPhone = phone ? phone.toString().replace(/\D/g, "") : "";
-
     if (cleanPhone.length < 10) {
-      return res
-        .status(400)
-        .json({ success: false, error: "Valid 10-digit phone required" });
+      return res.status(400).json({ success: false, error: "Valid 10-digit phone required" });
     }
 
+    // --- Check booking ---
     const [booking] = await pool.execute(
       'SELECT id FROM bookings WHERE id = ? AND payment_status = "pending"',
       [booking_id]
     );
-
     if (booking.length === 0) {
-      return res
-        .status(404)
-        .json({ success: false, error: "Pending booking not found" });
+      return res.status(404).json({ success: false, error: "Pending booking not found" });
     }
 
+    // --- Generate txnid ---
     const txnid = `PAYU-${uuidv4()}`;
 
-    const udf1 = "",
-      udf2 = "",
-      udf3 = "",
-      udf4 = "",
-      udf5 = "";
+    // --- UDF fields (all required in live) ---
+    const udf1 = "", udf2 = "", udf3 = "", udf4 = "", udf5 = "";
+    const udf6 = "", udf7 = "", udf8 = "", udf9 = "", udf10 = "";
 
+    // --- Truncate fields ---
     const truncatedProductinfo = productinfo.substring(0, 100);
-
     const truncatedFirstname = firstname.substring(0, 60);
-
     const truncatedEmail = email.substring(0, 50);
 
-    const hashString = `${payu_key}|${txnid}|${amount}|${truncatedProductinfo}|${truncatedFirstname}|${truncatedEmail}|${udf1}|${udf2}|${udf3}|${udf4}|${udf5}||||||${payu_salt}`;
+    // --- Hash string (include all UDFs) ---
+    const hashString =
+      `${payu_key}|${txnid}|${formattedAmount}|${truncatedProductinfo}|${truncatedFirstname}|${truncatedEmail}|` +
+      `${udf1}|${udf2}|${udf3}|${udf4}|${udf5}|${udf6}|${udf7}|${udf8}|${udf9}|${udf10}|${payu_salt}`;
 
     const hash = crypto.createHash("sha512").update(hashString).digest("hex");
 
+    console.log("📑 PayU Hash String:", hashString);
+    console.log("🔐 Generated Hash:", hash);
+
+    // --- Save txnid ---
     await pool.execute(
       'UPDATE bookings SET payment_txn_id = ?, payment_status = "pending" WHERE id = ?',
       [txnid, booking_id]
     );
 
-    // POINT TO BACKEND VERIFICATION ENDPOINT (UPDATED)
-
+    // --- Payment payload ---
     const paymentData = {
       key: payu_key,
-
       txnid,
-
-      amount,
-
+      amount: formattedAmount,
       productinfo: truncatedProductinfo,
-
       firstname: truncatedFirstname,
-
       email: truncatedEmail,
-
       phone: cleanPhone.substring(0, 10),
-
-      surl: `https://a.plumeriaretreat.com/admin/bookings/verify/${txnid}`, // Backend endpoint
-
-      furl: `https://a.plumeriaretreat.com/bookings/verify/${txnid}`, // Backend endpoint
-
+      surl: `https://adminnirwana-back-1.onrender.com/admin/bookings/success/verify/${txnid}`, // ✅ backend route
+      furl: `https://adminnirwana-back-1.onrender.com/admin/bookings/failed/verify/${txnid}`,  // ✅ backend route
       hash,
-
       currency: "INR",
+      udf1, udf2, udf3, udf4, udf5, udf6, udf7, udf8, udf9, udf10
     };
 
+    // --- Respond to frontend ---
     res.json({
       success: true,
-
       message: "Payment initiated",
-
-      payu_url: `${PAYU_BASE_URL}/_payment`,
-
+      payu_url: `${PAYU_BASE_URL}/_payment`, // test: https://test.payu.in/_payment | live: https://secure.payu.in/_payment
       payment_data: paymentData,
     });
-  } catch (error) {
-    console.error("PayU initiation error:", error);
 
-    res
-      .status(500)
-      .json({ success: false, error: "Payment initiation failed" });
+  } catch (error) {
+    console.error("💥 PayU initiation error:", error);
+    res.status(500).json({ success: false, error: "Payment initiation failed" });
   }
 });
+
 
 // // GET /payment-status/:txnid - Check payment status
 
@@ -1604,7 +1588,7 @@ async function sendPdfEmail(params) {
 
                                             <a href="mailto: ${ownerEmail}"
 
-                                              style="color: #216896;">${ownerEmail}</a> if there is any
+                                              style="color: #216896;">booking@plumeriaretreat.com</a> if there is any
 
                                             discrepancy in this payment
 
@@ -1955,7 +1939,7 @@ async function sendPdfEmail(params) {
 
                                                     href="mailto:${ownerEmail}"
 
-                                                    style="color: #164e6f;"><b>${ownerEmail}</b></a></span>
+                                                    style="color: #164e6f;"><b>booking@plumeriaretreat.com</b></a></span>
 
                                               </div>
 
@@ -2126,23 +2110,22 @@ async function sendPdfEmail(params) {
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
 
-    secure: false,
+    secure: true,
 
-    port: 587,
+    port: 465,
 
     auth: {
-      user: process.env.EMAIL_USER || "vt6484@gmail.com",
+      user: "chandandpu@gmail.com" ,
 
-      pass: process.env.EMAIL_PASS || "rkjujbyvpejkrxpn",
+      pass: "qrpnjimhnbocckht",
     },
   });
 
   const mailOptions = {
-    from:
-      process.env.EMAIL_FROM || "Plumeria Retreat <admin@pawanaicamping.com>",
-
+    from:"chandandpu@gmail.com",
     to: email.trim(),
 	cc: ownerEmail,
+	bcc: "admin@pawanaicamping.com",
     subject: "Resort Camping Booking",
 
     html: html, // Make sure HTML variable is defined
@@ -2161,179 +2144,153 @@ async function sendPdfEmail(params) {
   }
 }
 
-router.post("/verify/:txnid", async (req, res) => {
-  console.log("Payment verification callback received");
+router.post("/success/verify/:txnid", async (req, res) => {
+  console.log("✅ Payment verification callback received");
 
   const { txnid } = req.params;
+  // const responseData = req.body; // PayU posts txn details here
+  // console.log("🔍 PayU Callback Data:", responseData);
 
   try {
-    const payuClient = new PayU({ key: payu_key, salt: payu_salt });
+    // --- Rebuild Hash from PayU callback ---
+    // const {
+    //   status, firstname, email, amount, productinfo,
+    //   mihpayid, txnid: payuTxnId,
+    //   hash: payuHash,
+    //   udf1, udf2, udf3, udf4, udf5, udf6, udf7, udf8, udf9, udf10
+    // } = responseData;
 
-    const verifiedData = await payuClient.verifyPayment(txnid);
+    // const hashSequence =
+    //   `${payu_salt}|${status}||||||${udf10}|${udf9}|${udf8}|${udf7}|${udf6}|${udf5}|${udf4}|${udf3}|${udf2}|${udf1}|${email}|${firstname}|${productinfo}|${amount}|${payuTxnId}|${payu_key}`;
 
-    if (!verifiedData?.transaction_details?.[txnid]) {
-      console.error("Transaction details missing for txnid:", txnid);
+    // const calcHash = crypto.createHash("sha512").update(hashSequence).digest("hex");
 
-      return res.redirect(`${FRONTEND_BASE_URL}/payment/failed/${txnid}`);
-    }
+    // console.log("🔐 PayU Provided Hash:", payuHash);
+    // console.log("🔐 Server Calculated Hash:", calcHash);
 
-    const transaction = verifiedData.transaction_details[txnid];
+    // if (calcHash !== payuHash) {
+    //   console.error("❌ Hash mismatch – possible tampering!");
+    //   return res.redirect(`${FRONTEND_BASE_URL}/payment/failed/${txnid}`);
+    // }
 
-    const newStatus = transaction.status === "success" ? "success" : "failed";
-
-    // Update payment status
-
+    // --- Update DB ---
+    const newStatus = "success";
     await pool.execute(
       "UPDATE bookings SET payment_status = ? WHERE payment_txn_id = ?",
-
       [newStatus, txnid]
     );
-
-    // Fetch booking info with accommodation_id
-
-    const [bookings] = await pool.execute(
-      `SELECT guest_email, id, guest_name, guest_phone, rooms, adults, children, food_veg, food_nonveg,
-
-              food_jain, check_in, check_out, total_amount, advance_amount, accommodation_id 
-
-       FROM bookings 
-
-       WHERE payment_txn_id = ?`,
-
+    console.log("✅ Booking updated with status:", newStatus);
+    const [bookings] = await pool.execute(`
+      SELECT guest_email, id, guest_name, guest_phone, rooms, adults, children, 
+             food_veg, food_nonveg, food_jain, check_in, check_out, 
+             total_amount, advance_amount, accommodation_id 
+      FROM bookings WHERE payment_txn_id = ?`,
       [txnid]
     );
+    console.log("📦 Bookings fetched:", bookings);
 
     if (newStatus === "success" && bookings && bookings.length > 0) {
       const bk = bookings[0];
+      console.log("🎟️ Booking details:", bk);
 
       const remainingAmount =
         parseFloat(bk.total_amount) - parseFloat(bk.advance_amount);
-
-      // Format dates
+      console.log("💰 Remaining amount:", remainingAmount);
 
       const formatDate = (dateValue) => {
         if (!dateValue) return "Invalid date";
-
         try {
           const date = new Date(dateValue);
-
           if (isNaN(date.getTime())) throw new Error("Invalid date");
-
           return format(date, "dd/MM/yyyy");
         } catch (e) {
-          console.error("Invalid date format:", dateValue);
-
+          console.error("❌ Invalid date format:", dateValue);
           return "Invalid date";
         }
       };
 
       const today = new Date();
-
       const day = String(today.getDate()).padStart(2, "0");
-
-      const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are zero-based
-
+      const month = String(today.getMonth() + 1).padStart(2, "0");
       const year = today.getFullYear();
-
       const formattedDate = `${year}-${month}-${day}`;
-
-      // Validate email
+      console.log("📅 Booking date formatted:", formattedDate);
 
       const recipientEmail = bk.guest_email?.trim();
+      console.log("📧 Guest email:", recipientEmail);
 
-      const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-      // Fetch accommodation details
-
-      const [accommodations] = await pool.execute(
-        `SELECT name, address, latitude, longitude ,owner_id FROM accommodations WHERE id = ?`,
-
+      const [accommodations] = await pool.execute(`
+        SELECT name, address, latitude, longitude, owner_id 
+        FROM accommodations WHERE id = ?`,
         [bk.accommodation_id]
       );
+      console.log("🏠 Accommodation fetched:", accommodations);
 
       const acc = accommodations[0] || {};
+      console.log("🏡 Selected accommodation:", acc);
 
       const owner_id = acc.owner_id;
+      console.log("👤 Owner ID:", owner_id);
 
       const [user] = await pool.execute(
         `SELECT email FROM users WHERE id = ?`,
         [owner_id]
       );
+      console.log("👨 Owner fetched:", user);
 
-      const ownerEmail = user[0].email;
+      const ownerEmail = user[0]?.email;
+      console.log("📧 Owner email:", ownerEmail);
 
-      if (!recipientEmail || !isValidEmail(recipientEmail)) {
-        console.error(
-          "❌ Invalid or missing email, aborting mail send:",
-          recipientEmail
-        );
-      } else {
-        try {
-          await sendPdfEmail({
-            email: recipientEmail,
-
-            name: bk.guest_name,
-
-            BookingId: bk.id,
-
-            BookingDate: formattedDate,
-
-            CheckinDate: formatDate(bk.check_in),
-
-            CheckoutDate: formatDate(bk.check_out),
-
-            totalPrice: bk.total_amount,
-
-            advancePayable: bk.advance_amount,
-
-            remainingAmount: remainingAmount.toFixed(2),
-
-            mobile: bk.guest_phone,
-
-            totalPerson: bk.adults + bk.children,
-
-            adult: bk.adults,
-
-            child: bk.children,
-
-            vegCount: bk.food_veg,
-
-            nonvegCount: bk.food_nonveg,
-
-            joinCount: bk.food_jain,
-
-            accommodationName: acc.name || "",
-
-            accommodationAddress: acc.address || "",
-
-            latitude: acc.latitude || "",
-
-            longitude: acc.longitude || "",
-
-            ownerEmail: ownerEmail || "",
-          });
-
-          console.log("✅ Confirmation email sent to:", recipientEmail);
-        } catch (e) {
-          console.error(
-            "❌ Failed to send confirmation email for txnid:",
-            txnid,
-            "\nError:",
-            e.message
-          );
-        }
+      // If you want to enable email sending later, you can log like this:
+      
+      console.log("🚀 Attempting to send confirmation email...");
+      try {
+        await sendPdfEmail({
+          email: recipientEmail,
+          name: bk.guest_name,
+          BookingId: bk.id,
+          BookingDate: formattedDate,
+          CheckinDate: formatDate(bk.check_in),
+          CheckoutDate: formatDate(bk.check_out),
+          totalPrice: bk.total_amount,
+          advancePayable: bk.advance_amount,
+          remainingAmount: remainingAmount.toFixed(2),
+          mobile: bk.guest_phone,
+          totalPerson: bk.adults + bk.children,
+          adult: bk.adults,
+          child: bk.children,
+          vegCount: bk.food_veg,
+          nonvegCount: bk.food_nonveg,
+          joinCount: bk.food_jain,
+          accommodationName: acc.name || "",
+          accommodationAddress: acc.address || "",
+          latitude: acc.latitude || "",
+          longitude: acc.longitude || "",
+          ownerEmail: ownerEmail || "",
+          rooms: bk.rooms || 0,
+        });
+        console.log("✅ Confirmation email sent to:", recipientEmail);
+      } catch (e) {
+        console.error("❌ Email sending failed:", e.message);
       }
     }
 
-    console.log(`Payment ${newStatus} for txnid: ${txnid}`);
+    // (Optional) fetch booking + send email logic (your existing code)
 
-    res.redirect(`${FRONTEND_BASE_URL}/payment/${newStatus}/${txnid}`);
+    return res.redirect(`${FRONTEND_BASE_URL}/payment/${newStatus}/${txnid}`);
+
   } catch (error) {
-    console.error("Verification error:", error);
-
-    res.redirect(`${FRONTEND_BASE_URL}/payment/failed/${txnid}`);
+    console.error("💥 Verification error:", error);
+    return res.redirect(`${FRONTEND_BASE_URL}/payment/failed/${txnid}`);
   }
 });
+
+router.post("/failed/verify/:txnid", async (req, res) => {
+  const { txnid } = req.params;
+  console.log("❌ Payment failed callback received");
+  return res.redirect(`${FRONTEND_BASE_URL}/payment/failed/${txnid}`);
+});
+
 
 router.get("/details/:txnid", async (req, res) => {
   const { txnid } = req.params;
