@@ -27,7 +27,9 @@ app.use(cors({
     'http://localhost:5173', 
     'https://adminnirwana.vercel.app',
     'http://localhost:5174',
-    'https://nirwanastays.vercel.app'
+    'https://nirwanastays.vercel.app',
+    'https://nirwanastays.com',
+    'https://www.nirwanastays.com'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
