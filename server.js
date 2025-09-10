@@ -25,11 +25,12 @@ app.use(morgan('dev')); // Log to console in development
 app.use(cors({
   origin: [
     'http://localhost:5173', 
-    'https://adminnirwana.vercel.app',
+    'https://adminnirwana-front.vercel.app',
     'http://localhost:5174',
     'https://nirwanastays.vercel.app',
     'https://nirwanastays.com',
-    'https://www.nirwanastays.com'
+    'https://www.nirwanastays.com',
+    'https://admin.nirwanastays.com'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
