@@ -1,33 +1,17 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const cors = require('cors');
 const pool = require('../dbcon'); // Import the database connection pool
 
-const app = express();
-
-// Middleware
-// app.use(cors());
-app.use(express.json());
-
-
-
-// Admin Users Routes
 const adminUsersRouter = express.Router();
 
 // GET /admin/users - Fetch all users
 adminUsersRouter.get('/', async (req, res) => {
   try {
+    
     const [rows] = await pool.execute(
-      'SELECT id, name, email, role, status, lastLogin, avatar,password FROM users ORDER BY id DESC'
+      'SELECT id, name, email, role, status, phoneNumber, avatar,password FROM users ORDER BY id DESC'
     );
-    
-    // Format the response to match frontend expectations
-    const users = rows.map(user => ({
-      ...user,
-      lastLogin: user.lastLogin ? user.lastLogin.toISOString() : null
-    }));
-    
-    res.json(users);
+    res.json(rows);
   } catch (error) {
     console.error('Error fetching users:', error);
     res.status(500).json({ 
@@ -43,7 +27,7 @@ adminUsersRouter.get('/:id', async (req, res) => {
     const { id } = req.params;
     
     const [rows] = await pool.execute(
-      'SELECT id, name, email, role, status, lastLogin, avatar,password FROM users WHERE id = ?',
+      'SELECT id, name, email, role, status, phoneNumber, avatar FROM users WHERE id = ?',
       [id]
     );
     
@@ -51,12 +35,7 @@ adminUsersRouter.get('/:id', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
     
-    const user = {
-      ...rows[0],
-      lastLogin: rows[0].lastLogin ? rows[0].lastLogin.toISOString() : null
-    };
-    
-    res.json(user);
+    res.json(rows[0]);
   } catch (error) {
     console.error('Error fetching user:', error);
     res.status(500).json({ 
@@ -69,13 +48,13 @@ adminUsersRouter.get('/:id', async (req, res) => {
 // POST /admin/users - Create new user
 adminUsersRouter.post('/', async (req, res) => {
   try {
-    const { name, email, role, status, avatar, password } = req.body;
-    
+    const { name, email, phoneNumber, role, status, avatar, password } = req.body;
+    console.log(req.body);
     // Validate required fields
-    if (!name || !email || !role || !status || !password) {
+    if (!name || !email || !phoneNumber || !role || !status || !password) {
       return res.status(400).json({ 
         error: 'Missing required fields',
-        required: ['name', 'email', 'role', 'status', 'password']
+        required: ['name', 'email', 'phoneNumber', 'role', 'status', 'password']
       });
     }
     
@@ -97,15 +76,15 @@ adminUsersRouter.post('/', async (req, res) => {
       });
     }
     
-    // Check if email already exists
+    // Check if email or phone number already exists
     const [existingUsers] = await pool.execute(
-      'SELECT id FROM users WHERE email = ?',
-      [email]
+      'SELECT id FROM users WHERE email = ? OR phoneNumber = ?',
+      [email, phoneNumber]
     );
     
     if (existingUsers.length > 0) {
       return res.status(409).json({ 
-        error: 'Email already exists' 
+        error: 'Email or phone number already exists' 
       });
     }
     
@@ -115,30 +94,25 @@ adminUsersRouter.post('/', async (req, res) => {
     
     // Insert new user
     const [result] = await pool.execute(
-      'INSERT INTO users (name, email, role, status, avatar, password) VALUES (?, ?, ?, ?, ?, ?)',
-      [name, email, role, status, 'https://example.com/avatars/charlie-davis.jpg' || null, hashedPassword]
+      'INSERT INTO users (name, email, phoneNumber, role, status, avatar, password) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [name, email, phoneNumber, role, status, 'https://example.com/avatars/charlie-davis.jpg' || null, hashedPassword]
     );
     
     // Fetch the created user (without password)
     const [newUserRows] = await pool.execute(
-      'SELECT id, name, email, role, status, lastLogin, avatar FROM users WHERE id = ?',
+      'SELECT id, name, email, role, status, phoneNumber, avatar FROM users WHERE id = ?',
       [result.insertId]
     );
     
-    const newUser = {
-      ...newUserRows[0],
-      lastLogin: newUserRows[0].lastLogin ? newUserRows[0].lastLogin.toISOString() : null
-    };
-    
-    res.status(201).json(newUser);
+    res.status(201).json(newUserRows[0]);
     
   } catch (error) {
     console.error('Error creating user:', error);
     
-    // Handle duplicate email error specifically
+    // Handle duplicate email/phone error specifically
     if (error.code === 'ER_DUP_ENTRY') {
       return res.status(409).json({ 
-        error: 'Email already exists' 
+        error: 'Email or phone number already exists' 
       });
     }
     
@@ -153,7 +127,7 @@ adminUsersRouter.post('/', async (req, res) => {
 adminUsersRouter.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, email, role, status, avatar, password } = req.body;
+    const { name, email, phoneNumber, role, status, avatar, password } = req.body;
     
     // Check if user exists
     const [existingUsers] = await pool.execute(
@@ -201,6 +175,20 @@ adminUsersRouter.put('/:id', async (req, res) => {
       }
     }
     
+    // Check if phone number is being changed and if it already exists
+    if (phoneNumber) {
+      const [phoneCheck] = await pool.execute(
+        'SELECT id FROM users WHERE phoneNumber = ? AND id != ?',
+        [phoneNumber, id]
+      );
+      
+      if (phoneCheck.length > 0) {
+        return res.status(409).json({ 
+          error: 'Phone number already exists' 
+        });
+      }
+    }
+    
     // Build update query dynamically
     const updateFields = [];
     const updateValues = [];
@@ -213,6 +201,11 @@ adminUsersRouter.put('/:id', async (req, res) => {
     if (email) {
       updateFields.push('email = ?');
       updateValues.push(email);
+    }
+    
+    if (phoneNumber) {
+      updateFields.push('phoneNumber = ?');
+      updateValues.push(phoneNumber);
     }
     
     if (role) {
@@ -254,23 +247,18 @@ adminUsersRouter.put('/:id', async (req, res) => {
     
     // Fetch updated user
     const [updatedUserRows] = await pool.execute(
-      'SELECT id, name, email, role, status, lastLogin, avatar FROM users WHERE id = ?',
+      'SELECT id, name, email, role, status, phoneNumber, avatar FROM users WHERE id = ?',
       [id]
     );
     
-    const updatedUser = {
-      ...updatedUserRows[0],
-      lastLogin: updatedUserRows[0].lastLogin ? updatedUserRows[0].lastLogin.toISOString() : null
-    };
-    
-    res.json(updatedUser);
+    res.json(updatedUserRows[0]);
     
   } catch (error) {
     console.error('Error updating user:', error);
     
     if (error.code === 'ER_DUP_ENTRY') {
       return res.status(409).json({ 
-        error: 'Email already exists' 
+        error: 'Email or phone number already exists' 
       });
     }
     
@@ -354,16 +342,11 @@ adminUsersRouter.patch('/:id/status', async (req, res) => {
     
     // Fetch updated user
     const [updatedUserRows] = await pool.execute(
-      'SELECT id, name, email, role, status, lastLogin, avatar FROM users WHERE id = ?',
+      'SELECT id, name, email, role, status, phoneNumber, avatar FROM users WHERE id = ?',
       [id]
     );
     
-    const updatedUser = {
-      ...updatedUserRows[0],
-      lastLogin: updatedUserRows[0].lastLogin ? updatedUserRows[0].lastLogin.toISOString() : null
-    };
-    
-    res.json(updatedUser);
+    res.json(updatedUserRows[0]);
     
   } catch (error) {
     console.error('Error updating user status:', error);
@@ -373,45 +356,5 @@ adminUsersRouter.patch('/:id/status', async (req, res) => {
     });
   }
 });
-
-// POST /admin/users/:id/login - Update last login (utility endpoint)
-adminUsersRouter.post('/:id/login', async (req, res) => {
-  try {
-    const { id } = req.params;
-    
-    // Check if user exists and is active
-    const [existingUsers] = await pool.execute(
-      'SELECT id, status FROM users WHERE id = ?',
-      [id]
-    );
-    
-    if (existingUsers.length === 0) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-    
-    if (existingUsers[0].status !== 'active') {
-      return res.status(403).json({ error: 'User is not active' });
-    }
-    
-    // Update last login
-    await pool.execute(
-      'UPDATE users SET lastLogin = NOW() WHERE id = ?',
-      [id]
-    );
-    
-    res.json({ 
-      message: 'Last login updated successfully',
-      timestamp: new Date().toISOString()
-    });
-    
-  } catch (error) {
-    console.error('Error updating last login:', error);
-    res.status(500).json({ 
-      error: 'Failed to update last login',
-      message: error.message 
-    });
-  }
-});
-
 
 module.exports = adminUsersRouter;
