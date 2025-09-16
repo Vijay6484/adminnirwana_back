@@ -28,7 +28,7 @@ const PAYU_BASE_URL =process.env.PAYU_BASE_URL || "https://test.payu.in"  //'htt
 
 const FRONTEND_BASE_URL =process.env.FRONTEND_BASE_URL || "https://nirwanastays.vercel.app";
 
-const ADMIN_BASE_URL =process.env.ADMIN_BASE_URL || "https://adminnirwana-back-1.onrender.com";
+const ADMIN_BASE_URL =process.env.ADMIN_BASE_URL || "https://api.nirwanastays.com";
 
 // BOOKING CLEANUP JOB
 
@@ -669,8 +669,8 @@ router.post("/payments/payu", async (req, res) => {
       firstname: truncatedFirstname,
       email: truncatedEmail,
       phone: cleanPhone.substring(0, 10),
-      surl: `https://adminnirwana-back-1.onrender.com/admin/bookings/success/verify/${txnid}`, // ✅ backend route
-      furl: `https://adminnirwana-back-1.onrender.com/admin/bookings/failed/verify/${txnid}`,  // ✅ backend route
+      surl: `https://api.nirwanastays.com/admin/bookings/success/verify/${txnid}`, // ✅ backend route
+      furl: `https://api.nirwanastays.com/admin/bookings/failed/verify/${txnid}`,  // ✅ backend route
       hash,
       currency: "INR",
       udf1, udf2, udf3, udf4, udf5, udf6, udf7, udf8, udf9, udf10
