@@ -1432,7 +1432,7 @@ async function sendPdfEmail(params) {
 
                             style="font-size:0pt; line-height:0pt; text-align:right;background:#ffffff;padding-right: 6px;">
 
-                            <img src="https://plumeriaretreat.com/assets/plumeria-removebg-preview-CWtMayYt.png" width="auto"
+                            <img src="https://nirwanastays.com/logo-light.png" width="auto"
 
                               height="55" mc:edit="image_2" style="max-height:55px;" border="0" alt="Logo" />
 
@@ -1580,15 +1580,13 @@ async function sendPdfEmail(params) {
 
                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;width:50%;">
 
-                                        <div mc:edit="text_3"><b>The amount payable to <span>Plumeria Retreat Pawna lake
-
-                                              AC cottage </span> for this booking
+                                        <div mc:edit="text_3"><b>The amount payable to <span>${accommodationName} </span> for this booking
 
                                             is <span>INR ${advancePayable}</span> as per the details below. Please email us at
 
                                             <a href="mailto: ${ownerEmail}"
 
-                                              style="color: #216896;">booking@plumeriaretreat.com</a> if there is any
+                                              style="color: #216896;">booking@nirwanastays.com</a> if there is any
 
                                             discrepancy in this payment
 
@@ -1805,9 +1803,7 @@ async function sendPdfEmail(params) {
 
                                           stage,
 
-                                          you will be notified and this confirmation email & Plumeria Retreat Pawna lake
-
-                                          AC cottage Booking ID will be null and void.</div>
+                                          you will be notified and this confirmation email & nirwana stays Booking ID will be null and void.</div>
 
                                       </td>
 
@@ -1939,7 +1935,7 @@ async function sendPdfEmail(params) {
 
                                                     href="mailto:${ownerEmail}"
 
-                                                    style="color: #164e6f;"><b>booking@plumeriaretreat.com</b></a></span>
+                                                    style="color: #164e6f;"><b>booking@nirwanastays.com</b></a></span>
 
                                               </div>
 
@@ -1995,11 +1991,9 @@ async function sendPdfEmail(params) {
 
                                           email account that is not monitored. To ensure that you receive
 
-                                          communication related to your booking from Plumeria Retreat Pawna lake AC
+                                          communication related to your booking from Nirwana stays , please add <a href="mailto:booking@nirwanastays.com "
 
-                                          cottage , please add <a href="mailto:babukale60@gmail.com "
-
-                                            style="color: #164e6f;"><b>babukale60@gmail.com </b></a> to your contact list
+                                            style="color: #164e6f;"><b>booking@nirwanastays.com </b></a> to your contact list
 
                                           and
 
@@ -2108,24 +2102,24 @@ async function sendPdfEmail(params) {
   // ... (rest of the HTML template remains the same) ...
 
   const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: "smtp.hostinger.com",
 
     secure: true,
 
-    port: 465,
+    port: 587,
 
     auth: {
-      user: "chandandpu@gmail.com" ,
+      user: "booking@nirwanastays.com" ,
 
       pass: "qrpnjimhnbocckht",
     },
   });
 
   const mailOptions = {
-    from:"chandandpu@gmail.com",
+    from:"booking@nirwanastays.com",
     to: email.trim(),
 	cc: ownerEmail,
-	bcc: "admin@pawanaicamping.com",
+	bcc: "admin@nirwanastays.com",
     subject: "Resort Camping Booking",
 
     html: html, // Make sure HTML variable is defined
