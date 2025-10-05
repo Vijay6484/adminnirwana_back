@@ -1586,7 +1586,7 @@ async function sendPdfEmail(params) {
 
                                             <a href="mailto: ${ownerEmail}"
 
-                                              style="color: #216896;">booking@nirwanastays.com</a> if there is any
+                                              style="color: #216896;">bookings@nirwanastays.com</a> if there is any
 
                                             discrepancy in this payment
 
@@ -1935,7 +1935,7 @@ async function sendPdfEmail(params) {
 
                                                     href="mailto:${ownerEmail}"
 
-                                                    style="color: #164e6f;"><b>booking@nirwanastays.com</b></a></span>
+                                                    style="color: #164e6f;"><b>bookings@nirwanastays.com</b></a></span>
 
                                               </div>
 
@@ -1991,9 +1991,9 @@ async function sendPdfEmail(params) {
 
                                           email account that is not monitored. To ensure that you receive
 
-                                          communication related to your booking from Nirwana stays , please add <a href="mailto:booking@nirwanastays.com "
+                                          communication related to your booking from Nirwana stays , please add <a href="mailto:bookings@nirwanastays.com "
 
-                                            style="color: #164e6f;"><b>booking@nirwanastays.com </b></a> to your contact list
+                                            style="color: #164e6f;"><b>bookings@nirwanastays.com </b></a> to your contact list
 
                                           and
 
@@ -2109,14 +2109,14 @@ async function sendPdfEmail(params) {
     port: 587,
 
     auth: {
-      user: "booking@nirwanastays.com" ,
+      user: "bookings@nirwanastays.com" ,
 
-      pass: "qrpnjimhnbocckht",
+      pass: "Nirwanastays@6484",
     },
   });
 
   const mailOptions = {
-    from:"booking@nirwanastays.com",
+    from:"bookings@nirwanastays.com",
     to: email.trim(),
 	cc: ownerEmail,
 	bcc: "admin@nirwanastays.com",
