@@ -26,7 +26,7 @@ const payu_salt = process.env.PAYU_MERCHANT_SALT||"diKKGjJv3yODMXnmPF48WXaQLWoBJ
 
 const PAYU_BASE_URL =process.env.PAYU_BASE_URL || "https://test.payu.in"  //'https://secure.payu.in';
 
-const FRONTEND_BASE_URL =process.env.FRONTEND_BASE_URL || "https://nirwanastays.vercel.app";
+const FRONTEND_BASE_URL =process.env.FRONTEND_BASE_URL || "https://nirwanastays.com";
 
 const ADMIN_BASE_URL =process.env.ADMIN_BASE_URL || "https://api.nirwanastays.com";
 
