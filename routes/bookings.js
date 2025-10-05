@@ -2119,7 +2119,7 @@ async function sendPdfEmail(params) {
     from:"bookings@nirwanastays.com",
     to: email.trim(),
 	cc: ownerEmail,
-	bcc: "admin@nirwanastays.com",
+	bcc: "nirwanastays@gmail.com",
     subject: "Resort Camping Booking",
 
     html: html, // Make sure HTML variable is defined
