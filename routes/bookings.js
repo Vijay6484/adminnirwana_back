@@ -1953,7 +1953,7 @@ async function sendPdfEmail(params) {
 
                                                 <span><b>Contact Number- </b></span>
 
-                                                <span>Babu</span>- <span>9923366051</span>
+                                                <span>Tushar Thakar</span>-<span>9175106307</span>
 
                                               </div>
 
