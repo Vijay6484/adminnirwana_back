@@ -180,6 +180,7 @@ router.post("/", async (req, res) => {
       total_amount,
 
       advance_amount = 0,
+      coupon_code,
       payment_method = "payu",
     } = req.body;
 
@@ -256,7 +257,7 @@ router.post("/", async (req, res) => {
 
         check_in, check_out, adults, children, rooms, food_veg, food_nonveg, 
 
-        food_jain, total_amount, advance_amount, payment_status, payment_txn_id, created_at
+        food_jain, total_amount, advance_amount, payment_status, payment_txn_id, created_at,coupon_used,Discount
 
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 
@@ -281,6 +282,8 @@ router.post("/", async (req, res) => {
         payment_status,
         payment_txn_id,
         new Date(),
+        coupon_code || null,
+        null,
       ]
     );
 
@@ -605,7 +608,7 @@ router.delete('/delete/:id', async (req, res) => {
 
 router.post("/payments/payu", async (req, res) => {
   try {
-    const { amount, firstname, email, phone, booking_id, productinfo } = req.body;
+    const { amount, firstname, email, phone, booking_id, productinfo, coupon_code } = req.body;
 
     // --- Validation ---
     if (!amount || !firstname || !email || !booking_id || !productinfo) {
@@ -1713,7 +1716,7 @@ async function sendPdfEmail(params) {
                                                 <b>TARRIF</b></p>
 						<p style="padding-bottom: 10px;margin: 0px;">Full Amount: <b style="float:right;">${full_amount}</b></p>
                                               <p style="padding-bottom: 10px;margin: 0px;">Discount: <b style="float:right;">${discount}</b></p>
-                                              <p style="padding-bottom: 10px;margin: 0px;">Coupon: <b style="float:right;">${coupon}</b></p>
+                                              <p style="padding-bottom: 10px;margin: 0px;">Coupon: <b style="float:right;">${coupons}</b></p>
 
                                               <p style="padding-bottom: 10px;margin: 0px;">Total Amount: <b
 
@@ -1953,7 +1956,7 @@ async function sendPdfEmail(params) {
 
                                                 <span><b>Contact Number- </b></span>
 
-                                                <span>Tushar Thakar</span>-<span>9175106307</span>
+                                                <span>${ownerName}</span>- <span>${ownerPhone}</span>
 
                                               </div>
 
@@ -2177,7 +2180,7 @@ router.post("/success/verify/:txnid", async (req, res) => {
     const [bookings] = await pool.execute(`
       SELECT guest_email, id, guest_name, guest_phone, rooms, adults, children, 
              food_veg, food_nonveg, food_jain, check_in, check_out, 
-             total_amount, advance_amount, accommodation_id 
+             total_amount, advance_amount,coupon_used,Discount, accommodation_id 
       FROM bookings WHERE payment_txn_id = ?`,
       [txnid]
     );
@@ -2231,9 +2234,12 @@ router.post("/success/verify/:txnid", async (req, res) => {
         [owner_id]
       );
       console.log("👨 Owner fetched:", user);
-
+      const ownerName = user[0]?.name;
       const ownerEmail = user[0]?.email;
+      const ownerPhone = user[0]?.phoneNumber;
       console.log("📧 Owner email:", ownerEmail);
+
+      
 
       // If you want to enable email sending later, you can log like this:
       
@@ -2246,7 +2252,7 @@ router.post("/success/verify/:txnid", async (req, res) => {
           BookingDate: formattedDate,
           CheckinDate: formatDate(bk.check_in),
           CheckoutDate: formatDate(bk.check_out),
-          totalPrice: bk.total_amount,
+          totalPrice: (bk.total_amount - bk.discount),
           advancePayable: bk.advance_amount,
           remainingAmount: remainingAmount.toFixed(2),
           mobile: bk.guest_phone,
@@ -2261,7 +2267,12 @@ router.post("/success/verify/:txnid", async (req, res) => {
           latitude: acc.latitude || "",
           longitude: acc.longitude || "",
           ownerEmail: ownerEmail || "",
+          ownerName: ownerName || "",
+          ownerPhone: ownerPhone || "",
           rooms: bk.rooms || 0,
+          coupons: bk.coupon_used || 0,
+          full_amount: bk.total_amount || 0,
+          discount: bk.Discount || 0,
         });
         console.log("✅ Confirmation email sent to:", recipientEmail);
       } catch (e) {
