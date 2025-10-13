@@ -174,6 +174,8 @@ routes.get('/accommodations', async (req, res) => {
             features: processJsonField(row.features, []),
             images: processJsonField(row.images, []),
             amenities: processJsonField(row.amenity_ids, []),
+            maxPerson: row.MaxPersonVilla || null,
+            ratePerPerson: row.RatePersonVilla || null,
             location: {
                 address: row.address,
                 coordinates: {
