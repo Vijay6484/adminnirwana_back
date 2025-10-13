@@ -67,6 +67,8 @@ routes.get('/accommodations', async (req, res) => {
                 adult_price,
                 child_price,
                 max_guests,
+                MaxPersonVilla,
+                RatePersonVilla,
                 created_at,
                 updated_at
             FROM accommodations
