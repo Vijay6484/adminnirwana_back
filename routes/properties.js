@@ -412,7 +412,7 @@ routes.post('/accommodations', async (req, res) => {
             (name, description, type, capacity, rooms, price, features, images, available, owner_id, city_id, 
              address, latitude, longitude, amenity_ids, package_name, package_description, package_images,
              adult_price, child_price, max_guests, MaxPersonVilla, RatePersonVilla) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 name,
                 description || null,
