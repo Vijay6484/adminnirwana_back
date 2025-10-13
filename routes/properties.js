@@ -545,7 +545,9 @@ routes.put('/accommodations/:id', async (req, res) => {
                 package_images: JSON.stringify(validateInput(packages.images ?? current.package_images, 'array')),
                 adult_price: validateInput(packages.pricing?.adult ?? current.adult_price, 'number'),
                 child_price: validateInput(packages.pricing?.child ?? current.child_price, 'number'),
-                max_guests: validateInput(packages.pricing?.maxGuests ?? current.max_guests, 'number')
+                max_guests: validateInput(packages.pricing?.maxGuests ?? current.max_guests, 'number'),
+                MaxPersonVilla: validateInput(basicInfo.MaxPersonVilla ?? current.MaxPersonVilla, 'number'),
+                RatePersonVilla: validateInput(basicInfo.RatePersonVilla ?? current.RatePersonVilla, 'number')
             };
 
             // Additional validation
@@ -577,6 +579,8 @@ routes.put('/accommodations/:id', async (req, res) => {
                     adult_price = ?, 
                     child_price = ?, 
                     max_guests = ?,
+                    MaxPersonVilla = ?,
+                    RatePersonVilla = ?,
                     updated_at = CURRENT_TIMESTAMP()
                 WHERE id = ?`,
                 [
@@ -601,6 +605,8 @@ routes.put('/accommodations/:id', async (req, res) => {
                     updateData.adult_price,
                     updateData.child_price,
                     updateData.max_guests,
+                    updateData.MaxPersonVilla,
+                    updateData.RatePersonVilla,
                     id
                 ]
             );
