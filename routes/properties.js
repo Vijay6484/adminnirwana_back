@@ -388,7 +388,9 @@ routes.post('/accommodations', async (req, res) => {
             price, 
             features = [], 
             images = [], 
-            available = true 
+            available = true,
+            MaxPersonVilla,
+            RatePersonVilla
         } = basicInfo;
 
         const address = location?.address || null;
@@ -409,7 +411,7 @@ routes.post('/accommodations', async (req, res) => {
             `INSERT INTO accommodations 
             (name, description, type, capacity, rooms, price, features, images, available, owner_id, city_id, 
              address, latitude, longitude, amenity_ids, package_name, package_description, package_images,
-             adult_price, child_price, max_guests) 
+             adult_price, child_price, max_guests, MaxPersonVilla, RatePersonVilla) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 name,
@@ -432,7 +434,9 @@ routes.post('/accommodations', async (req, res) => {
                 JSON.stringify(packageImages),
                 adultPrice,
                 childPrice,
-                maxGuests
+                maxGuests,
+                MaxPersonVilla || null,
+                RatePersonVilla || null
             ]
         );
 
