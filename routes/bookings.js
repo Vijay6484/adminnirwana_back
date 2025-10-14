@@ -259,7 +259,7 @@ router.post("/", async (req, res) => {
 
         food_jain, total_amount, advance_amount, payment_status, payment_txn_id, created_at,coupon_used,Discount
 
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 
       [
         guest_name,
@@ -273,10 +273,9 @@ router.post("/", async (req, res) => {
         adults,
         children,
         rooms,
-        food_veg,
-        food_nonveg,
-
-        food_jain,
+        food_veg || 0,
+        food_nonveg || 0,
+        food_jain || 0,
         total_amount,
         advance_amount,
         payment_status,
