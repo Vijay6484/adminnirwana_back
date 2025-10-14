@@ -32,7 +32,7 @@ routes.get('/accommodations', async (req, res) => {
             search,
             amenities,
             page = 1,
-            limit = 10,
+            limit = 500,
             sort = 'created_at',
             order = 'DESC'
         } = req.query;
