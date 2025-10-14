@@ -214,14 +214,14 @@ router.post("/", async (req, res) => {
 
     const totalFood = food_veg + food_nonveg + food_jain;
 
-    if (totalFood !== totalGuests) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          error: "Food preferences must match total guests",
-        });
-    }
+    // if (totalFood !== totalGuests) {
+    //   return res
+    //     .status(400)
+    //     .json({
+    //       success: false,
+    //       error: "Food preferences must match total guests",
+    //     });
+    // }
 
     if (new Date(check_in) >= new Date(check_out)) {
       return res
@@ -958,7 +958,8 @@ async function sendPdfEmail(params) {
 	  coupon,
 	  discount,
 	  full_amount,
-	  rooms
+	  rooms,
+    accommodation_type,
   } = params;
 
   console.log("Sending PDF email to:", email);
@@ -972,6 +973,7 @@ async function sendPdfEmail(params) {
 
     return;
   }
+
 
   const html = `<!DOCTYPE html
 
@@ -2102,6 +2104,1118 @@ async function sendPdfEmail(params) {
 
 </html>`;
 
+const html_villa = `<!DOCTYPE html
+
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
+
+  xmlns:o="urn:schemas-microsoft-com:office:office">
+
+
+
+<head>
+
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <meta name="format-detection" content="date=no" />
+
+  <meta name="format-detection" content="address=no" />
+
+  <meta name="format-detection" content="telephone=no" />
+
+  <meta name="x-apple-disable-message-reformatting" />
+
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i" rel="stylesheet" />
+
+  <title>Booking</title>
+
+  <link rel="shortcut icon" href="images/favicon.png">
+
+
+
+
+
+  <style type="text/css" media="screen">
+
+    body {
+
+      padding: 0 !important;
+
+      margin: 0 !important;
+
+      display: block !important;
+
+      min-width: 100% !important;
+
+      width: 100% !important;
+
+      background: #ffffff;
+
+      -webkit-text-size-adjust: none
+
+    }
+
+
+
+    a {
+
+      color: #000001;
+
+      text-decoration: none
+
+    }
+
+
+
+    p {
+
+      margin: 0 !important;
+
+    }
+
+
+
+    img {
+
+      -ms-interpolation-mode: bicubic;
+
+    }
+
+
+
+    .mcnPreviewText {
+
+      display: none !important;
+
+    }
+
+
+
+    .cke_editable,
+
+    .cke_editable a,
+
+    .cke_editable span,
+
+    .cke_editable a span {
+
+      color: #000001 !important;
+
+    }
+
+
+
+    @media only screen and (max-device-width: 480px),
+
+    only screen and (max-width: 480px) {
+
+      .mobile-shell {
+
+        width: 100% !important;
+
+        min-width: 100% !important;
+
+        padding: 0 3px;
+
+      }
+
+
+
+      .bg {
+
+        background-size: 100% auto !important;
+
+        -webkit-background-size: 100% auto !important;
+
+      }
+
+
+
+      .text-header,
+
+      .m-center {
+
+        text-align: center !important;
+
+      }
+
+
+
+      .center {
+
+        margin: 0 auto !important;
+
+      }
+
+
+
+      .container {
+
+        padding: 20px 10px !important
+
+      }
+
+
+
+      .td {
+
+        width: 100% !important;
+
+        min-width: 100% !important;
+
+      }
+
+
+
+      .m-td,
+
+      .m-hide {
+
+        display: none !important;
+
+        width: 0 !important;
+
+        height: 0 !important;
+
+        font-size: 0 !important;
+
+        line-height: 0 !important;
+
+        min-height: 0 !important;
+
+      }
+
+
+
+      .m-block {
+
+        display: block !important;
+
+      }
+
+
+
+      .column,
+
+      .column-dir,
+
+      .column-top,
+
+      .column-empty,
+
+      .column-empty2,
+
+      .column-dir-top {
+
+        float: left !important;
+
+        width: 100% !important;
+
+        display: block !important;
+
+      }
+
+
+
+      .column-empty {
+
+        padding-bottom: 30px !important;
+
+      }
+
+
+
+      .column-empty2 {
+
+        padding-bottom: 10px !important;
+
+      }
+
+
+
+      .content-spacing {
+
+        width: 15px !important;
+
+      }
+
+
+
+      @media (max-width:600px) {
+
+        .logoimg {
+
+          padding-top: 5px !important;
+
+        }
+
+
+
+        .logoimg img {
+
+          width: 130px !important;
+
+          height: 28px !important;
+
+        }
+
+
+
+        .mainhead {
+
+          font-size: 12px !important;
+
+        }
+
+
+
+        table th,
+
+        table td {
+
+          font-size: 7px !important;
+
+          line-height: 12px !important;
+
+          padding-bottom: 2px !important;
+
+        }
+
+
+
+        table.border-table th {
+
+          padding-top: 2px !important;
+
+        }
+
+
+
+        .paypd {
+
+          padding: 0px 2px !important;
+
+          font-size: 7px !important;
+
+          margin-bottom: 4px !important;
+
+        }
+
+
+
+        .p30-15 {
+
+          padding: 6px 0px 0 !important;
+
+        }
+
+
+
+        .socialimgs td,
+
+        .socialimgs td img {
+
+          width: 24px !important;
+
+          height: 24px !important;
+
+          padding: 0 1px;
+
+        }
+
+
+
+        .footertd {
+
+          padding: 12px 0 !;
+
+        }
+
+
+
+        .bordr {
+
+          border-top-width: 2px !important;
+
+        }
+
+
+
+        .mobheadpb {
+
+          padding-bottom: 8px !important;
+
+        }
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+
+<body class="body"
+
+  style="padding:0 !important; margin:0 !important; display:block !important; min-width:100% !important; width:100% !important; background:#ffffff; -webkit-text-size-adjust:none;">
+
+  <span class="mcnPreviewText"
+
+    style="display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;"></span>
+
+
+
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f4f4f4">
+
+    <tr>
+
+      <td align="center" valign="top">
+
+        <div mc:repeatable="Select" mc:variant="Hero Image">
+
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+            <tr>
+
+              <td class="m-td" valign="top" style="font-size:0pt; line-height:0pt; text-align:left;">
+
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f4f4f4" class="border"
+
+                  style="font-size:0pt; line-height:0pt; text-align:center; width:100%; min-width:100%;">
+
+                  <tr>
+
+                    <td bgcolor="#f4f4f4" height="auto" class="border"
+
+                      style="font-size:0pt; line-height:0pt; text-align:center; width:100%; min-width:100%;">&nbsp;</td>
+
+                  </tr>
+
+                </table>
+
+              </td>
+
+              <td valign="center" align="center" class="bordr mobile-shell" width="675" bgcolor="#ffffff"
+
+                style="border-bottom: 3px solid #216896;">
+
+                <table width="675" border="0" cellspacing="0" cellpadding="0" class="mobile-shell">
+
+                  <tr>
+
+                    <td class="td"
+
+                      style="padding-top: 60px; width:675px; min-width:675px; font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal;">
+
+                      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+                        <tr>
+
+                          <td class="p30-15" style="padding: 12px;">
+
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+                              <tr>
+
+                                <td class="h2 pb25 mainhead"
+
+                                  style="color:#444444; font-family:Lato, Arial ,sans-serif; font-size:22px; font-weight:bold; line-height:24px;padding-bottom:8px;">
+
+                                  <div mc:edit="text_2">${accommodationName} </div>
+
+                                </td>
+
+                              </tr>
+
+                              <tr>
+
+                                <td class="pb25"
+
+                                  style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:15px; padding-bottom:8px;width:100%;padding-right: 6px;">
+
+                                  <div mc:edit="text_3">Booking ID - <b>${BookingId}</b></div>
+
+                                </td>
+
+                              </tr>
+
+                              <tr>
+
+                                <td class="pb25"
+
+                                  style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:14px; line-height:15px; padding-bottom:0;width:100%;padding-right: 5px;">
+
+                                  <div mc:edit="text_3">Booking Date - <span>${BookingDate}</span></div>
+
+                                </td>
+
+                              </tr>
+
+                            </table>
+
+                          </td>
+
+                          <td class="fluid-img logoimg"
+
+                            style="font-size:0pt; line-height:0pt; text-align:right;background:#ffffff;padding-right: 6px;">
+
+                            <img src="https://instagram.fpnq7-8.fna.fbcdn.net/v/t51.2885-19/283634291_534556971515568_864457084658693403_n.jpg?efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby43NjguYzIifQ&_nc_ht=instagram.fpnq7-8.fna.fbcdn.net&_nc_cat=100&_nc_oc=Q6cZ2QFu1vjoUJQ4r4JrNEQzOTB3FdYRjq_lyayqvlpNMs6hkEuCI4CgZVgwNHU2CncRvc5K5T9FR1FQxba0o_2fLJvU&_nc_ohc=FgYyB-Jq5r4Q7kNvwHcqfCh&_nc_gid=unsrLNRkWgcF1hzi4QyV6Q&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfdSgRPdYKpZyIA0n8Co8BpMwTNHMgQgBN5eu5_205ZVeA&oe=68EBBDE7&_nc_sid=7a9f4b" width="auto"
+
+                              height="55" mc:edit="image_2" style="max-height:55px;" border="0" alt="Logo" />
+
+                          </td>
+
+                        </tr>
+
+                      </table>
+
+                    </td>
+
+                  </tr>
+
+                </table>
+
+              </td>
+
+              <td class="m-td" valign="top" style="font-size:0pt; line-height:0pt; text-align:left;">
+
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f4f4f4" class="border"
+
+                  style="font-size:0pt; line-height:0pt; text-align:center; width:100%; min-width:100%;">
+
+                  <tr>
+
+                    <td bgcolor="#f4f4f4" height="auto" class="border"
+
+                      style="font-size:0pt; line-height:0pt; text-align:center; width:100%; min-width:100%;">&nbsp;</td>
+
+                  </tr>
+
+                </table>
+
+              </td>
+
+            </tr>
+
+          </table>
+
+        </div>
+
+
+
+
+
+        <div mc:repeatable="Select" mc:variant="Intro">
+
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f4f4f4">
+
+            <tr>
+
+              <td class="m-td" valign="top" style="font-size:0pt; line-height:0pt; text-align:left;">
+
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff" class="border"
+
+                  style="font-size:0pt; line-height:0pt; text-align:center; width:100%; min-width:100%;">
+
+                  <tr>
+
+                    <td bgcolor="#f4f4f4" height="150" class="border"
+
+                      style="font-size:0pt; line-height:0pt; text-align:center; width:100%; min-width:100%;">&nbsp;</td>
+
+                  </tr>
+
+                </table>
+
+              </td>
+
+              <td valign="top" align="center" class="mobile-shell p0-15" width="675" bgcolor="#ffffff">
+
+                <table width="675" border="0" cellspacing="0" cellpadding="0" class="mobile-shell">
+
+                  <tr>
+
+                    <td class="td"
+
+                      style="width:675px; min-width:675px; font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal;">
+
+                      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+                        <tr>
+
+                          <td class="bbrr" bgcolor="#ffffff" style="border-radius:0px 0px 12px 12px;">
+
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+                              <tr>
+
+                                <td class="p30-15" style="padding: 12px;">
+
+
+
+                                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+                                    <tr>
+
+                                      <td class="pb25"
+
+                                        style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;width:50%;">
+
+                                        <div mc:edit="text_3"><b>Dear <span>${name}</span>,</b></div>
+
+                                      </td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                      <td class="pb25"
+
+                                        style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;width:50%;">
+
+                                        <div mc:edit="text_3"><span>${accommodationName} </span> has
+
+                                          received a request for booking of
+
+                                          your Camping as per the details below. The primary guest <span>${name}</span>
+
+                                          will be
+
+                                          carrying a copy of this e-voucher. </div>
+
+                                      </td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                      <td class="pb25"
+
+                                        style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;width:50%;">
+
+                                        <div mc:edit="text_3">For your reference, Booking ID is
+
+                                          <span><b>${BookingId}</b></span>.</div>
+
+                                      </td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                      <td class="pb25"
+
+                                        style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;width:50%;">
+
+                                        <div mc:edit="text_3"><b>The amount payable to <span>${accommodationName} </span> for this booking
+
+                                            is <span>INR ${advancePayable}</span> as per the details below. Please email us at
+
+                                            <a href="mailto: ${ownerEmail}"
+
+                                              style="color: #216896;">bookings@nirwanastays.com</a> if there is any
+
+                                            discrepancy in this payment
+
+                                            amount.</b></div>
+
+                                      </td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                      <td class="pb25"
+
+                                        style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;width:100%;">
+
+                                        <div mc:edit="text_3">Kindly consider this e-voucher for booking confirmation
+
+                                          with the
+
+                                          following inclusions and services. </div>
+
+                                      </td>
+
+                                    </tr>
+
+                                  </table>
+
+
+
+                                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+                                    <tr>
+
+                                      <td class="pb25"
+
+                                        style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;width:100%;">
+
+                                        <div mc:edit="text_3"><b>Team <span>${accommodationName}
+
+                                            </span></b></div>
+
+                                      </td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                      <td class="pb25"
+
+                                        style="color:#878887; font-family:Lato, Arial,sans-serif; font-size:14px; line-height:22px; padding-bottom:8px;width:100%;text-align:right;">
+
+                                        <div mc:edit="text_3">All prices indicated below are in INR</div>
+
+                                      </td>
+
+                                    </tr>
+
+                                  </table>
+
+
+
+                                  <table class="border-table" width="100%"
+
+                                    style="font-family: arial, sans-serif;border-collapse: collapse;width: 100%; margin-bottom: 10px;"
+
+                                    cellspacing="0" cellpadding="0">
+
+                                    <tr>
+
+                                      <th class="bordr"
+
+                                        style="border: 1px solid #dddddd;border-top: 3px solid #216896;text-align: left;padding: 9px 7px 10px;color: #878887;font-family: Lato, Arial,sans-serif;font-size: 13.5px;line-height: 16px;">
+
+                                        BOOKING DETAILS</th>
+
+                                      <th class="bordr"
+
+                                        style="border: 1px solid #dddddd;border-top: 3px solid #216896;text-align: left;padding: 9px 7px 10px;color: #878887;font-family: Lato, Arial,sans-serif;font-size: 13.5px;line-height: 16px;">
+
+                                        PAYMENT BREAKUP</th>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td valign="center"
+                                            style="border: 1px solid #dddddd; padding: 8px; color: #000000; font-family: Lato, Arial, sans-serif; font-size: 16px; line-height: 22px;">
+                                        
+                                            <p style="padding-bottom: 5px; margin: 0px;">Mobile: <b>${mobile}</b></p>
+                                            <p style="padding-bottom: 5px; margin: 0px;">Check In: <b>${CheckinDate}</b></p>
+                                            <p style="padding-bottom: 5px; margin: 0px;">Check Out: <b>${CheckoutDate}</b></p>
+                                            <p style="padding-bottom: 5px; margin: 0px;">Total Person: <b>${totalPerson}</b></p>
+                                        
+                                        </td>
+
+                                      <td
+
+                                        style="border: 1px solid #dddddd;text-align: left;padding: 6px 7px 8px;color: #000000;font-family: Lato, Arial,sans-serif;font-size: 14px;line-height: 16px;">
+
+                                        <table style="width: 100%;">
+
+                                          <tr>
+
+                                            <td valign="top" style="width: 100%;padding-right: 8px;">
+
+                                              <p style="padding-top: 5px;padding-bottom: 10px;margin: 0px;">
+
+                                                <b>TARRIF</b></p>
+						<p style="padding-bottom: 10px;margin: 0px;">Full Amount: <b style="float:right;">${full_amount}</b></p>
+                                              <p style="padding-bottom: 10px;margin: 0px;">Discount: <b style="float:right;">${discount}</b></p>
+                                              <p style="padding-bottom: 10px;margin: 0px;">Coupon: <b style="float:right;">${coupons}</b></p>
+
+                                              <p style="padding-bottom: 10px;margin: 0px;">Total Amount: <b
+
+                                                  style="float:right;">${totalPrice}</b></p>
+
+                                              <p style="padding-bottom: 10px;margin: 0px;">Advance Amount: <b
+
+                                                  style="float:right;">${advancePayable}</b></p>
+
+                                              <p style="padding-bottom: 10px;margin: 0px;">Remaining Amount: <b
+
+                                                  style="float:right;">${remainingAmount}</b></p>
+
+                                            </td>
+
+                                          </tr>
+
+                                        </table>
+
+                                      </td>
+
+                                    </tr>
+
+                                  </table>
+
+
+
+                                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+                                    <tr>
+
+                                      <td class="pb25 mobheadpb"
+
+                                        style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:24px;">
+
+                                        <div mc:edit="text_3"><b>Booking Cancellation Policy:</b> From ${CheckinDate},100%
+
+                                          penalty will be
+
+                                          charged. In case of no show : no refund.Booking cannot be
+
+                                          cancelled/modified on or after the booking date and time mentioned in
+
+                                          the Camping Confirmation Voucher. All time mentioned above is in
+
+                                          destination time.</div>
+
+                                      </td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                      <td class="pb25 bordr"
+
+                                        style="color:#216896;border-bottom: 3px solid #216896; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:6px;">
+
+                                        <div mc:edit="text_3"><b>Note</b></div>
+
+                                      </td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                      <td class="pb25"
+
+                                        style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;padding-top:8px;">
+
+                                        <div mc:edit="text_3">If your contact details have changed, please notify us so
+
+                                          that the
+
+                                          same can be updated in our records.</div>
+
+                                      </td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                      <td class="pb25 mobheadpb"
+
+                                        style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:24px;">
+
+                                        <div mc:edit="text_3">If the booking is cancelled or changed by guest at a later
+
+                                          stage,
+
+                                          you will be notified and this confirmation email & nirwana stays Booking ID will be null and void.</div>
+
+                                      </td>
+
+                                    </tr>
+
+                                  </table>
+
+
+
+                                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+                                    <tr>
+
+                                      <td>
+
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+                                          <tr>
+
+                                            <td class="pb25 bordr"
+
+                                              style="color:#216896;border-bottom: 3px solid #216896; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:6px;">
+
+                                              <div mc:edit="text_3"><b>${accommodationName} Contact
+
+                                                  Info</b></div>
+
+                                            </td>
+
+                                          </tr>
+
+                                        </table>
+
+                                      </td>
+
+                                    </tr>
+
+                                  </table>
+
+                                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+                                    <tr>
+
+                                      <td style="padding-top:8px;padding-bottom:8px;width:50%;">
+
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+                                          <tr>
+
+                                            <td class="pb25"
+
+                                              style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px;">
+
+                                              <div mc:edit="text_3"><b>${accommodationName} </b></div>
+
+                                            </td>
+
+                                          </tr>
+
+                                          <tr>
+
+                                            <td class="pb25"
+
+                                              style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px;">
+
+                                              <div mc:edit="text_3">At- <span>${accommodationAddress}</span></div>
+
+                                            </td>
+
+                                          </tr>
+
+                                          <tr>
+
+                                            <td class="pb25"
+
+                                              style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px;">
+
+                                              <div mc:edit="text_3"><span>pawna lake</span></div>
+
+                                            </td>
+
+                                          </tr>
+
+                                          <!--<tr>
+
+																										<td class="pb25" style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px;">
+
+																											<div mc:edit="text_3"><span>Maharashtra</span>, <span>India</span></div>
+
+																										</td>
+
+																									</tr>-->
+
+                                          <tr>
+
+                                            <td class="pb25"
+
+                                              style="color:#216896; font-family:Lato, Arial,sans-serif; font-size:14px; line-height:22px;">
+
+                                              <div mc:edit="text_3">
+
+                                                <a href="http://maps.google.com/maps?q=${latitude},${longitude}"
+
+                                                  style="color: #216896;">Google Maps Link</a>
+
+                                              </div>
+
+                                            </td>
+
+                                          </tr>
+
+                                        </table>
+
+                                      </td>
+
+                                      <td style="padding-top:8px;padding-bottom:8px;width:50%;">
+
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+                                          <tr>
+
+                                            <td class="pb25"
+
+                                              style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:14px; line-height:22px;">
+
+                                              <div mc:edit="text_3">
+
+                                                <span><b>Email- </b></span><span><a
+
+                                                    href="mailto:${ownerEmail}"
+
+                                                    style="color: #164e6f;"><b>bookings@nirwanastays.com</b></a></span>
+
+                                              </div>
+
+                                            </td>
+
+                                          </tr>
+
+                                          <tr>
+
+                                            <td class="pb25"
+
+                                              style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:14px; line-height:22px;">
+
+                                              <div mc:edit="text_3">
+
+                                                <span><b>Contact Number- </b></span>
+
+                                                <span>${ownerName}</span>- <span>${ownerPhone}</span>
+
+                                              </div>
+
+                                            </td>
+
+                                          </tr>
+
+                                        </table>
+
+                                      </td>
+
+                                    </tr>
+
+                                  </table>
+
+
+
+
+
+
+
+                                  <table width="100%" border="0" cellspacing="0" cellpadding="0"
+
+                                    style="padding-top: 10px;border-top:1px solid #dddddd;">
+
+                                    <tr>
+
+                                      <td class="pb25"
+
+                                        style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;">
+
+                                        <div mc:edit="text_3"><b>Note</b> - Please do not reply to this email. It has
+
+                                          been sent from an
+
+                                          email account that is not monitored. To ensure that you receive
+
+                                          communication related to your booking from Nirwana stays , please add <a href="mailto:bookings@nirwanastays.com "
+
+                                            style="color: #164e6f;"><b>bookings@nirwanastays.com </b></a> to your contact list
+
+                                          and
+
+                                          address book.</div>
+
+                                      </td>
+
+                                    </tr>
+
+                                  </table>
+
+                                   <table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding-top: 15px;">
+
+                                    <tr>
+
+                                      <td class="pb25 bordr"
+
+                                        style="color:#216896;border-bottom: 3px solid #216896; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:6px;">
+
+                                        <div mc:edit="text_3"><b>Things to Carry</b></div>
+
+                                      </td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                      <td class="pb25"
+
+                                        style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-top:8px; padding-bottom:8px;">
+
+                                        • Always good to carry extra pair of clothes<br>
+
+                                        • Winter and warm clothes as it will be cold night<br>
+
+                                        • Toothbrush and paste (toiletries)<br>
+
+                                        • Any other things you feel necessary<br>
+
+                                        • Personal medicine if any
+
+                                      </td>
+
+                                    </tr>
+
+                                  </table>
+
+                                </td>
+
+                              </tr>
+
+                            </table>
+
+                          </td>
+
+                        </tr>
+
+                      </table>
+
+                    </td>
+
+                  </tr>
+
+                </table>
+
+              </td>
+
+              <td class="m-td" valign="top" style="font-size:0pt; line-height:0pt; text-align:left;">
+
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff" class="border"
+
+                  style="font-size:0pt; line-height:0pt; text-align:left; width:100%; min-width:100%;">
+
+                  <tr>
+
+                    <td bgcolor="#f4f4f4" height="150" class="border"
+
+                      style="font-size:0pt; line-height:0pt; text-align:left; width:100%; min-width:100%;">&nbsp;</td>
+
+                  </tr>
+
+                </table>
+
+              </td>
+
+            </tr>
+
+          </table>
+
+        </div>
+
+
+
+      </td>
+
+    </tr>
+
+  </table>
+
+</body>
+
+
+
+</html>`
+
   // ... (rest of the HTML template remains the same) ...
 
   const transporter = nodemailer.createTransport({
@@ -2123,15 +3237,32 @@ async function sendPdfEmail(params) {
     to: email.trim(),
 	cc: ownerEmail,
 	bcc: "nirwanastays@gmail.com",
-    subject: "Resort Camping Booking",
+    subject: "NirwanaStays Resort Booking",
 
     html: html, // Make sure HTML variable is defined
   };
 
+  const mailOptions_villa = {
+    from:"bookings@nirwanastays.com",
+    to: email.trim(),
+	cc: ownerEmail,
+	bcc: "nirwanastays@gmail.com",
+    subject: "NirwanaStays Resort Booking",
+
+    html: html_villa, // Make sure HTML variable is defined
+  };
+
   try {
+
+    if (accommodation_type === "villa") {
+    const info = await transporter.sendMail(mailOptions_villa);
+
+    console.log("✅ Email sent for Villa:", info.response);
+    } else {
     const info = await transporter.sendMail(mailOptions);
 
     console.log("✅ Email sent:", info.response);
+    }
 
     return info;
   } catch (err) {
@@ -2273,6 +3404,7 @@ router.post("/success/verify/:txnid", async (req, res) => {
           coupons: bk.coupon_used || 0,
           full_amount: bk.total_amount || 0,
           discount: bk.Discount || 0,
+          accommodation_type: acc.type || "resort",
         });
         console.log("✅ Confirmation email sent to:", recipientEmail);
       } catch (e) {
