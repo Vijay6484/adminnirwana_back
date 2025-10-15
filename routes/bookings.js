@@ -3225,9 +3225,9 @@ async function sendPdfEmail(params) {
   const transporter = nodemailer.createTransport({
     host: "smtp.hostinger.com",
 
-    secure: false,
+    secure: true,
 
-    port: 465,
+    port: 587,
 
     auth: {
       user: "bookings@nirwanastays.com" ,
