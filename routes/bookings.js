@@ -465,7 +465,8 @@ router.post("/offline", async (req, res) => {
     );
 
     let ownerEmail = null;
-
+let ownerName = null;
+let ownerNumber = null;
     // Get owner email using owner_id
 
     // Original code context: Fetching owner details for a booking
