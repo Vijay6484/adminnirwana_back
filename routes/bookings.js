@@ -416,9 +416,9 @@ router.post("/offline", async (req, res) => {
 
         check_in, check_out, adults, children, rooms, food_veg, food_nonveg,
 
-        food_jain, total_amount, advance_amount, payment_status, payment_txn_id, created_at
+        food_jain, total_amount, advance_amount, payment_status, payment_txn_id, created_at,coupon_used,Discount
 
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 
       [
         guest_name,
@@ -440,6 +440,8 @@ router.post("/offline", async (req, res) => {
         payment_status,
         payment_txn_id,
         new Date(),
+        coupon || null,
+        discount || null,
       ]
     );
 
@@ -911,6 +913,8 @@ router.post("/payments/payu", async (req, res) => {
 // });
 
 // POST /verify/:txnid - Handle PayU callback (UPDATED)
+
+
 
 async function sendPdfEmail(params) {
   const {
