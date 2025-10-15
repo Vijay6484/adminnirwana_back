@@ -539,7 +539,7 @@ router.post("/offline", async (req, res) => {
       coupons: coupon || "",
       discount : discount || "",
       full_amount : full_amount || "",
-      accommodation_type : "resort",
+      accommodation_type : "resort"
     });
 
     res.json({
@@ -963,7 +963,7 @@ async function sendPdfEmail(params) {
 	  discount,
 	  full_amount,
 	  rooms,
-    accommodation_type,
+    accommodation_type
   } = params;
 
   console.log("Sending PDF email to:", email);
@@ -3230,9 +3230,9 @@ async function sendPdfEmail(params) {
     port: 587,
 
     auth: {
-      user: "team@digitaldiariess.com" ,
+      user: "bookings@nirwanastays.com" ,
 
-      pass: "Digitaldiaries@12345",
+      pass: "Nirwanastays@6484",
     },
   });
 
