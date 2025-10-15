@@ -18,17 +18,17 @@ const { v4: uuidv4 } = require("uuid");
 
 require("dotenv").config();
 
-const payu_key = process.env.PAYU_MERCHANT_KEY ||"n5ikm0"; //process.env.PAYU_MERCHANT_KEY;
+const payu_key = process.env.PAYU_MERCHANT_KEY || "n5ikm0"; //process.env.PAYU_MERCHANT_KEY;
 
-const payu_salt = process.env.PAYU_MERCHANT_SALT||"diKKGjJv3yODMXnmPF48WXaQLWoBJaD2";
+const payu_salt = process.env.PAYU_MERCHANT_SALT || "diKKGjJv3yODMXnmPF48WXaQLWoBJaD2";
 
 // "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCS2TYPoivPA9qOZW+c+evpYJGF9I6Ti/FVL3+3AyEImmWr9kd8NXRnWkRw79JmzJ+wUL1HkuloTCEvOcnoN16sd2bQ3n4j2WRca0QkHbx4JougH3NKfUkVIo2n21xlaxu9xiIjMZF1OQbNhMJfid/vP7FSaUhLdN46aWvyjxohK30IRvGnXbOH3666UtJXDSvebtrClLfUdX/9zOXLUU45vncGyCtylNiADLW5dMR5EkB8vQwpFXbQ+79LG9RRSDD8yCIJbd8Z4EB5gt1rQwdiUeV2T45ncSETFNKudUtwt/SxffzQPH5qDiyU2D35Cc5lUQQmELjK9aLYI/ge6ss1AgMBAAECggEAFxolc2GttzBxxIeoPr+hsdIvqq2N9Z/lPGPP2ZScMIyLtLk2x09oi+7rSAIurV4BPF2DXZx67F3XtaSHg2kck5DoQ7FREmY7r/9vFah480ULH8p62ovpwLGyK+dqeokWcO1YBwXgDptFWvVJF/sql+rDBIZMKZTN9k4J/buuHmwKQEqOowUBQWP1oo0Sgrnv48nQqlPfGatxq7U4w4hRLf3l6UR0c/mPHVb00UabBaZzZ9B/jMMasHDtLKYQ/69VtCo2QVm9Kykh3bRHKjiAF5f606gHiewILi3jj+lcnUrcDL1pFkBqskrJ8NibHfdJkaT1w3W1n463cLfCCntD2QKBgQC67h1lGo3avoB4GdoGMzqsDg9Bub0FpI2/lnL5oeFgygRvYRBb78E3fUKuYIWcUjiZaTgukIsMtZKPEpv90tJXua5dQEOOip9D4SQddHoT7MNToFFKJ5pXzHonc8dSMQYLV3LeR1V/9inJhrRPjedhr1jdJBMLZIAOe/mZBDh8CQKBgQDJG7zPL0sua6WkX6lLX0JydmEjbOFedeL2olY3pm8Vj0iC1ejUzsYrRwHEc1YUr2bO0NQ0uQ64dLhl+AXu2HwCWu7aRKMas0lg4uFemcmerqUMd1ozJJfI3fhjfSaFXwSqn5LcclUCXt/LOx49cxN9HmPHYNpyvV+P17gchIG4zQKBgCL95+rBKcTE3G+fBz0Z4eXLS/fVuRiRUSeIFkW8k9/2cRYYaWOMYfLtM8pIrzov+gBdvfKZhC4A30qBBUpiaJWbYJR8LylDscSXJJeO8jtAmt/QpubmuvGsiUFRXwJ3wtXkrNAHMm4dunzLBn3N5n5WwJ/E3PvI+F+9vV9zds9hAoGAdz5eHo8RSe4EIkmibRGHqaztff7SRpspv0mUS50A4sy5lvJVAtG0CPcqYhxtHwi9scV6/eP4iYCT0cpVYkC0jwTx+TOXbn599Nex/9C6Dr/JF3IxZn+9DBopbHxJee1ULANAJjwYkbZFhhCAprj0Bk0dppuUC1KkNfsXrLkY3cUCgYAYdRxY9KFg97jhRyD25LKTHbLyp5+rd53UxxNM5GGaxwHCe0FPj9jTD9x6NoGIg1cLDeaTIy20a4cDJx5v50yrMFvnbIMCcQ4nm71GfXUtO53O/k4ptTk9jVlM8ymJ/kK0956OODrrCTz/4Sur4+11gkd1LAw+MfKHZ8gtWrswPQ=="; //process.env.PAYU_MERCHANT_SALT;
 
-const PAYU_BASE_URL =process.env.PAYU_BASE_URL || "https://test.payu.in"  //'https://secure.payu.in';
+const PAYU_BASE_URL = process.env.PAYU_BASE_URL || "https://test.payu.in"  //'https://secure.payu.in';
 
-const FRONTEND_BASE_URL =process.env.FRONTEND_BASE_URL || "https://nirwanastays.com";
+const FRONTEND_BASE_URL = process.env.FRONTEND_BASE_URL || "https://nirwanastays.com";
 
-const ADMIN_BASE_URL =process.env.ADMIN_BASE_URL || "https://api.nirwanastays.com";
+const ADMIN_BASE_URL = process.env.ADMIN_BASE_URL || "https://api.nirwanastays.com";
 
 // BOOKING CLEANUP JOB
 
@@ -282,7 +282,7 @@ router.post("/", async (req, res) => {
         payment_txn_id,
         new Date(),
         coupon_code || null,
-         discount  || null,
+        discount || null,
       ]
     );
 
@@ -334,9 +334,9 @@ router.post("/offline", async (req, res) => {
 
       total_amount,
       advance_amount = 0,
-      coupon,         
-      discount,       
-      full_amount     
+      coupon,
+      discount,
+      full_amount
     } = req.body;
 
     // Validate required fields
@@ -468,17 +468,24 @@ router.post("/offline", async (req, res) => {
 
     // Get owner email using owner_id
 
+    // Original code context: Fetching owner details for a booking
     if (booking.owner_id) {
+      // Note: The 'connection.execute' returns an array where the first element
+      // is the rows array. We destructure it directly into 'user'.
       const [[user]] = await connection.execute(
         `
-
-        SELECT email FROM users WHERE id = ?
-
-      `,
+        SELECT email, phoneNumber, name 
+        FROM users 
+        WHERE id = ?
+        `,
         [booking.owner_id]
       );
 
-      ownerEmail = user?.email || null;
+      // If a user is found, their details are available on the 'user' object.
+      const ownerEmail = user?.email || null;
+      const ownerName = user?.name || null;
+      const ownerNumber = user?.number || null;
+
     }
 
     await connection.commit();
@@ -535,10 +542,13 @@ router.post("/offline", async (req, res) => {
       longitude: booking.longitude || "",
 
       ownerEmail: ownerEmail || "",
-      rooms : booking.rooms || "",
+      ownerName: user.ownerName || "",
+      ownerPhone: user.ownerNumber || "",
+
+      rooms: booking.rooms || "",
       coupons: coupon || "",
-      discount : discount || "",
-      full_amount : full_amount || "",
+      discount: discount || "",
+      full_amount: full_amount || "",
     });
 
     res.json({
@@ -958,10 +968,13 @@ async function sendPdfEmail(params) {
     longitude,
 
     ownerEmail,
-	  coupons,
-	  discount,
-	  full_amount,
-	  rooms,
+    coupons,
+    discount,
+    full_amount,
+    rooms,
+    ownerName,
+    ownerPhone,
+
   } = params;
 
   console.log("Sending PDF email to:", email);
@@ -2106,1117 +2119,1117 @@ async function sendPdfEmail(params) {
 
 </html>`;
 
-//   const html_villa = `<!DOCTYPE html
+  //   const html_villa = `<!DOCTYPE html
 
-//   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  //   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-// <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
+  // <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
 
-//   xmlns:o="urn:schemas-microsoft-com:office:office">
+  //   xmlns:o="urn:schemas-microsoft-com:office:office">
 
 
 
-// <head>
+  // <head>
 
-//   <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  //   <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 
-//   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  //   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-//   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  //   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-//   <meta name="format-detection" content="date=no" />
+  //   <meta name="format-detection" content="date=no" />
 
-//   <meta name="format-detection" content="address=no" />
+  //   <meta name="format-detection" content="address=no" />
 
-//   <meta name="format-detection" content="telephone=no" />
+  //   <meta name="format-detection" content="telephone=no" />
 
-//   <meta name="x-apple-disable-message-reformatting" />
+  //   <meta name="x-apple-disable-message-reformatting" />
 
-//   <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i" rel="stylesheet" />
+  //   <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i" rel="stylesheet" />
 
-//   <title>Booking</title>
+  //   <title>Booking</title>
 
-//   <link rel="shortcut icon" href="images/favicon.png">
+  //   <link rel="shortcut icon" href="images/favicon.png">
 
 
 
 
 
-//   <style type="text/css" media="screen">
+  //   <style type="text/css" media="screen">
 
-//     body {
+  //     body {
 
-//       padding: 0 !important;
+  //       padding: 0 !important;
 
-//       margin: 0 !important;
+  //       margin: 0 !important;
 
-//       display: block !important;
+  //       display: block !important;
 
-//       min-width: 100% !important;
+  //       min-width: 100% !important;
 
-//       width: 100% !important;
+  //       width: 100% !important;
 
-//       background: #ffffff;
+  //       background: #ffffff;
 
-//       -webkit-text-size-adjust: none
+  //       -webkit-text-size-adjust: none
 
-//     }
+  //     }
 
 
 
-//     a {
+  //     a {
 
-//       color: #000001;
+  //       color: #000001;
 
-//       text-decoration: none
+  //       text-decoration: none
 
-//     }
+  //     }
 
 
 
-//     p {
+  //     p {
 
-//       margin: 0 !important;
+  //       margin: 0 !important;
 
-//     }
+  //     }
 
 
 
-//     img {
+  //     img {
 
-//       -ms-interpolation-mode: bicubic;
+  //       -ms-interpolation-mode: bicubic;
 
-//     }
+  //     }
 
 
 
-//     .mcnPreviewText {
+  //     .mcnPreviewText {
 
-//       display: none !important;
+  //       display: none !important;
 
-//     }
+  //     }
 
 
 
-//     .cke_editable,
+  //     .cke_editable,
 
-//     .cke_editable a,
+  //     .cke_editable a,
 
-//     .cke_editable span,
+  //     .cke_editable span,
 
-//     .cke_editable a span {
+  //     .cke_editable a span {
 
-//       color: #000001 !important;
+  //       color: #000001 !important;
 
-//     }
+  //     }
 
 
 
-//     @media only screen and (max-device-width: 480px),
+  //     @media only screen and (max-device-width: 480px),
 
-//     only screen and (max-width: 480px) {
+  //     only screen and (max-width: 480px) {
 
-//       .mobile-shell {
+  //       .mobile-shell {
 
-//         width: 100% !important;
+  //         width: 100% !important;
 
-//         min-width: 100% !important;
+  //         min-width: 100% !important;
 
-//         padding: 0 3px;
+  //         padding: 0 3px;
 
-//       }
+  //       }
 
 
 
-//       .bg {
+  //       .bg {
 
-//         background-size: 100% auto !important;
+  //         background-size: 100% auto !important;
 
-//         -webkit-background-size: 100% auto !important;
+  //         -webkit-background-size: 100% auto !important;
 
-//       }
+  //       }
 
 
 
-//       .text-header,
+  //       .text-header,
 
-//       .m-center {
+  //       .m-center {
 
-//         text-align: center !important;
+  //         text-align: center !important;
 
-//       }
+  //       }
 
 
 
-//       .center {
+  //       .center {
 
-//         margin: 0 auto !important;
+  //         margin: 0 auto !important;
 
-//       }
+  //       }
 
 
 
-//       .container {
+  //       .container {
 
-//         padding: 20px 10px !important
+  //         padding: 20px 10px !important
 
-//       }
+  //       }
 
 
 
-//       .td {
+  //       .td {
 
-//         width: 100% !important;
+  //         width: 100% !important;
 
-//         min-width: 100% !important;
+  //         min-width: 100% !important;
 
-//       }
+  //       }
 
 
 
-//       .m-td,
+  //       .m-td,
 
-//       .m-hide {
+  //       .m-hide {
 
-//         display: none !important;
+  //         display: none !important;
 
-//         width: 0 !important;
+  //         width: 0 !important;
 
-//         height: 0 !important;
+  //         height: 0 !important;
 
-//         font-size: 0 !important;
+  //         font-size: 0 !important;
 
-//         line-height: 0 !important;
+  //         line-height: 0 !important;
 
-//         min-height: 0 !important;
+  //         min-height: 0 !important;
 
-//       }
+  //       }
 
 
 
-//       .m-block {
+  //       .m-block {
 
-//         display: block !important;
+  //         display: block !important;
 
-//       }
+  //       }
 
 
 
-//       .column,
+  //       .column,
 
-//       .column-dir,
+  //       .column-dir,
 
-//       .column-top,
+  //       .column-top,
 
-//       .column-empty,
+  //       .column-empty,
 
-//       .column-empty2,
+  //       .column-empty2,
 
-//       .column-dir-top {
+  //       .column-dir-top {
 
-//         float: left !important;
+  //         float: left !important;
 
-//         width: 100% !important;
+  //         width: 100% !important;
 
-//         display: block !important;
+  //         display: block !important;
 
-//       }
+  //       }
 
 
 
-//       .column-empty {
+  //       .column-empty {
 
-//         padding-bottom: 30px !important;
+  //         padding-bottom: 30px !important;
 
-//       }
+  //       }
 
 
 
-//       .column-empty2 {
+  //       .column-empty2 {
 
-//         padding-bottom: 10px !important;
+  //         padding-bottom: 10px !important;
 
-//       }
+  //       }
 
 
 
-//       .content-spacing {
+  //       .content-spacing {
 
-//         width: 15px !important;
+  //         width: 15px !important;
 
-//       }
+  //       }
 
 
 
-//       @media (max-width:600px) {
+  //       @media (max-width:600px) {
 
-//         .logoimg {
+  //         .logoimg {
 
-//           padding-top: 5px !important;
+  //           padding-top: 5px !important;
 
-//         }
+  //         }
 
 
 
-//         .logoimg img {
+  //         .logoimg img {
 
-//           width: 130px !important;
+  //           width: 130px !important;
 
-//           height: 28px !important;
+  //           height: 28px !important;
 
-//         }
+  //         }
 
 
 
-//         .mainhead {
+  //         .mainhead {
 
-//           font-size: 12px !important;
+  //           font-size: 12px !important;
 
-//         }
+  //         }
 
 
 
-//         table th,
+  //         table th,
 
-//         table td {
+  //         table td {
 
-//           font-size: 7px !important;
+  //           font-size: 7px !important;
 
-//           line-height: 12px !important;
+  //           line-height: 12px !important;
 
-//           padding-bottom: 2px !important;
+  //           padding-bottom: 2px !important;
 
-//         }
+  //         }
 
 
 
-//         table.border-table th {
+  //         table.border-table th {
 
-//           padding-top: 2px !important;
+  //           padding-top: 2px !important;
 
-//         }
+  //         }
 
 
 
-//         .paypd {
+  //         .paypd {
 
-//           padding: 0px 2px !important;
+  //           padding: 0px 2px !important;
 
-//           font-size: 7px !important;
+  //           font-size: 7px !important;
 
-//           margin-bottom: 4px !important;
+  //           margin-bottom: 4px !important;
 
-//         }
+  //         }
 
 
 
-//         .p30-15 {
+  //         .p30-15 {
 
-//           padding: 6px 0px 0 !important;
+  //           padding: 6px 0px 0 !important;
 
-//         }
+  //         }
 
 
 
-//         .socialimgs td,
+  //         .socialimgs td,
 
-//         .socialimgs td img {
+  //         .socialimgs td img {
 
-//           width: 24px !important;
+  //           width: 24px !important;
 
-//           height: 24px !important;
+  //           height: 24px !important;
 
-//           padding: 0 1px;
+  //           padding: 0 1px;
 
-//         }
+  //         }
 
 
 
-//         .footertd {
+  //         .footertd {
 
-//           padding: 12px 0 !;
+  //           padding: 12px 0 !;
 
-//         }
+  //         }
 
 
 
-//         .bordr {
+  //         .bordr {
 
-//           border-top-width: 2px !important;
+  //           border-top-width: 2px !important;
 
-//         }
+  //         }
 
 
 
-//         .mobheadpb {
+  //         .mobheadpb {
 
-//           padding-bottom: 8px !important;
+  //           padding-bottom: 8px !important;
 
-//         }
+  //         }
 
-//       }
+  //       }
 
-//     }
+  //     }
 
-//   </style>
+  //   </style>
 
-// </head>
+  // </head>
 
 
 
-// <body class="body"
+  // <body class="body"
 
-//   style="padding:0 !important; margin:0 !important; display:block !important; min-width:100% !important; width:100% !important; background:#ffffff; -webkit-text-size-adjust:none;">
+  //   style="padding:0 !important; margin:0 !important; display:block !important; min-width:100% !important; width:100% !important; background:#ffffff; -webkit-text-size-adjust:none;">
 
-//   <span class="mcnPreviewText"
+  //   <span class="mcnPreviewText"
 
-//     style="display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;"></span>
+  //     style="display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;"></span>
 
 
 
-//   <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f4f4f4">
+  //   <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f4f4f4">
 
-//     <tr>
+  //     <tr>
 
-//       <td align="center" valign="top">
+  //       <td align="center" valign="top">
 
-//         <div mc:repeatable="Select" mc:variant="Hero Image">
+  //         <div mc:repeatable="Select" mc:variant="Hero Image">
 
-//           <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  //           <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
-//             <tr>
+  //             <tr>
 
-//               <td class="m-td" valign="top" style="font-size:0pt; line-height:0pt; text-align:left;">
+  //               <td class="m-td" valign="top" style="font-size:0pt; line-height:0pt; text-align:left;">
 
-//                 <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f4f4f4" class="border"
+  //                 <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f4f4f4" class="border"
 
-//                   style="font-size:0pt; line-height:0pt; text-align:center; width:100%; min-width:100%;">
+  //                   style="font-size:0pt; line-height:0pt; text-align:center; width:100%; min-width:100%;">
 
-//                   <tr>
+  //                   <tr>
 
-//                     <td bgcolor="#f4f4f4" height="auto" class="border"
+  //                     <td bgcolor="#f4f4f4" height="auto" class="border"
 
-//                       style="font-size:0pt; line-height:0pt; text-align:center; width:100%; min-width:100%;">&nbsp;</td>
+  //                       style="font-size:0pt; line-height:0pt; text-align:center; width:100%; min-width:100%;">&nbsp;</td>
 
-//                   </tr>
+  //                   </tr>
 
-//                 </table>
+  //                 </table>
 
-//               </td>
+  //               </td>
 
-//               <td valign="center" align="center" class="bordr mobile-shell" width="675" bgcolor="#ffffff"
+  //               <td valign="center" align="center" class="bordr mobile-shell" width="675" bgcolor="#ffffff"
 
-//                 style="border-bottom: 3px solid #216896;">
+  //                 style="border-bottom: 3px solid #216896;">
 
-//                 <table width="675" border="0" cellspacing="0" cellpadding="0" class="mobile-shell">
+  //                 <table width="675" border="0" cellspacing="0" cellpadding="0" class="mobile-shell">
 
-//                   <tr>
+  //                   <tr>
 
-//                     <td class="td"
+  //                     <td class="td"
 
-//                       style="padding-top: 60px; width:675px; min-width:675px; font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal;">
+  //                       style="padding-top: 60px; width:675px; min-width:675px; font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal;">
 
-//                       <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  //                       <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
-//                         <tr>
+  //                         <tr>
 
-//                           <td class="p30-15" style="padding: 12px;">
+  //                           <td class="p30-15" style="padding: 12px;">
 
-//                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  //                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
-//                               <tr>
+  //                               <tr>
 
-//                                 <td class="h2 pb25 mainhead"
+  //                                 <td class="h2 pb25 mainhead"
 
-//                                   style="color:#444444; font-family:Lato, Arial ,sans-serif; font-size:22px; font-weight:bold; line-height:24px;padding-bottom:8px;">
+  //                                   style="color:#444444; font-family:Lato, Arial ,sans-serif; font-size:22px; font-weight:bold; line-height:24px;padding-bottom:8px;">
 
-//                                   <div mc:edit="text_2">${accommodationName} </div>
+  //                                   <div mc:edit="text_2">${accommodationName} </div>
 
-//                                 </td>
+  //                                 </td>
 
-//                               </tr>
+  //                               </tr>
 
-//                               <tr>
+  //                               <tr>
 
-//                                 <td class="pb25"
+  //                                 <td class="pb25"
 
-//                                   style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:15px; padding-bottom:8px;width:100%;padding-right: 6px;">
+  //                                   style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:15px; padding-bottom:8px;width:100%;padding-right: 6px;">
 
-//                                   <div mc:edit="text_3">Booking ID - <b>${BookingId}</b></div>
+  //                                   <div mc:edit="text_3">Booking ID - <b>${BookingId}</b></div>
 
-//                                 </td>
+  //                                 </td>
 
-//                               </tr>
+  //                               </tr>
 
-//                               <tr>
+  //                               <tr>
 
-//                                 <td class="pb25"
+  //                                 <td class="pb25"
 
-//                                   style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:14px; line-height:15px; padding-bottom:0;width:100%;padding-right: 5px;">
+  //                                   style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:14px; line-height:15px; padding-bottom:0;width:100%;padding-right: 5px;">
 
-//                                   <div mc:edit="text_3">Booking Date - <span>${BookingDate}</span></div>
+  //                                   <div mc:edit="text_3">Booking Date - <span>${BookingDate}</span></div>
 
-//                                 </td>
+  //                                 </td>
 
-//                               </tr>
+  //                               </tr>
 
-//                             </table>
+  //                             </table>
 
-//                           </td>
+  //                           </td>
 
-//                           <td class="fluid-img logoimg"
+  //                           <td class="fluid-img logoimg"
 
-//                             style="font-size:0pt; line-height:0pt; text-align:right;background:#ffffff;padding-right: 6px;">
+  //                             style="font-size:0pt; line-height:0pt; text-align:right;background:#ffffff;padding-right: 6px;">
 
-//                             <img src="https://instagram.fpnq7-8.fna.fbcdn.net/v/t51.2885-19/283634291_534556971515568_864457084658693403_n.jpg?efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby43NjguYzIifQ&_nc_ht=instagram.fpnq7-8.fna.fbcdn.net&_nc_cat=100&_nc_oc=Q6cZ2QFu1vjoUJQ4r4JrNEQzOTB3FdYRjq_lyayqvlpNMs6hkEuCI4CgZVgwNHU2CncRvc5K5T9FR1FQxba0o_2fLJvU&_nc_ohc=FgYyB-Jq5r4Q7kNvwHcqfCh&_nc_gid=unsrLNRkWgcF1hzi4QyV6Q&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfdSgRPdYKpZyIA0n8Co8BpMwTNHMgQgBN5eu5_205ZVeA&oe=68EBBDE7&_nc_sid=7a9f4b" width="auto"
+  //                             <img src="https://instagram.fpnq7-8.fna.fbcdn.net/v/t51.2885-19/283634291_534556971515568_864457084658693403_n.jpg?efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby43NjguYzIifQ&_nc_ht=instagram.fpnq7-8.fna.fbcdn.net&_nc_cat=100&_nc_oc=Q6cZ2QFu1vjoUJQ4r4JrNEQzOTB3FdYRjq_lyayqvlpNMs6hkEuCI4CgZVgwNHU2CncRvc5K5T9FR1FQxba0o_2fLJvU&_nc_ohc=FgYyB-Jq5r4Q7kNvwHcqfCh&_nc_gid=unsrLNRkWgcF1hzi4QyV6Q&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfdSgRPdYKpZyIA0n8Co8BpMwTNHMgQgBN5eu5_205ZVeA&oe=68EBBDE7&_nc_sid=7a9f4b" width="auto"
 
-//                               height="55" mc:edit="image_2" style="max-height:55px;" border="0" alt="Logo" />
+  //                               height="55" mc:edit="image_2" style="max-height:55px;" border="0" alt="Logo" />
 
-//                           </td>
+  //                           </td>
 
-//                         </tr>
+  //                         </tr>
 
-//                       </table>
+  //                       </table>
 
-//                     </td>
+  //                     </td>
 
-//                   </tr>
+  //                   </tr>
 
-//                 </table>
+  //                 </table>
 
-//               </td>
+  //               </td>
 
-//               <td class="m-td" valign="top" style="font-size:0pt; line-height:0pt; text-align:left;">
+  //               <td class="m-td" valign="top" style="font-size:0pt; line-height:0pt; text-align:left;">
 
-//                 <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f4f4f4" class="border"
+  //                 <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f4f4f4" class="border"
 
-//                   style="font-size:0pt; line-height:0pt; text-align:center; width:100%; min-width:100%;">
+  //                   style="font-size:0pt; line-height:0pt; text-align:center; width:100%; min-width:100%;">
 
-//                   <tr>
+  //                   <tr>
 
-//                     <td bgcolor="#f4f4f4" height="auto" class="border"
+  //                     <td bgcolor="#f4f4f4" height="auto" class="border"
 
-//                       style="font-size:0pt; line-height:0pt; text-align:center; width:100%; min-width:100%;">&nbsp;</td>
+  //                       style="font-size:0pt; line-height:0pt; text-align:center; width:100%; min-width:100%;">&nbsp;</td>
 
-//                   </tr>
+  //                   </tr>
 
-//                 </table>
+  //                 </table>
 
-//               </td>
+  //               </td>
 
-//             </tr>
+  //             </tr>
 
-//           </table>
+  //           </table>
 
-//         </div>
+  //         </div>
 
 
 
 
 
-//         <div mc:repeatable="Select" mc:variant="Intro">
+  //         <div mc:repeatable="Select" mc:variant="Intro">
 
-//           <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f4f4f4">
+  //           <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f4f4f4">
 
-//             <tr>
+  //             <tr>
 
-//               <td class="m-td" valign="top" style="font-size:0pt; line-height:0pt; text-align:left;">
+  //               <td class="m-td" valign="top" style="font-size:0pt; line-height:0pt; text-align:left;">
 
-//                 <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff" class="border"
+  //                 <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff" class="border"
 
-//                   style="font-size:0pt; line-height:0pt; text-align:center; width:100%; min-width:100%;">
+  //                   style="font-size:0pt; line-height:0pt; text-align:center; width:100%; min-width:100%;">
 
-//                   <tr>
+  //                   <tr>
 
-//                     <td bgcolor="#f4f4f4" height="150" class="border"
+  //                     <td bgcolor="#f4f4f4" height="150" class="border"
 
-//                       style="font-size:0pt; line-height:0pt; text-align:center; width:100%; min-width:100%;">&nbsp;</td>
+  //                       style="font-size:0pt; line-height:0pt; text-align:center; width:100%; min-width:100%;">&nbsp;</td>
 
-//                   </tr>
+  //                   </tr>
 
-//                 </table>
+  //                 </table>
 
-//               </td>
+  //               </td>
 
-//               <td valign="top" align="center" class="mobile-shell p0-15" width="675" bgcolor="#ffffff">
+  //               <td valign="top" align="center" class="mobile-shell p0-15" width="675" bgcolor="#ffffff">
 
-//                 <table width="675" border="0" cellspacing="0" cellpadding="0" class="mobile-shell">
+  //                 <table width="675" border="0" cellspacing="0" cellpadding="0" class="mobile-shell">
 
-//                   <tr>
+  //                   <tr>
 
-//                     <td class="td"
+  //                     <td class="td"
 
-//                       style="width:675px; min-width:675px; font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal;">
+  //                       style="width:675px; min-width:675px; font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal;">
 
-//                       <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  //                       <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
-//                         <tr>
+  //                         <tr>
 
-//                           <td class="bbrr" bgcolor="#ffffff" style="border-radius:0px 0px 12px 12px;">
+  //                           <td class="bbrr" bgcolor="#ffffff" style="border-radius:0px 0px 12px 12px;">
 
-//                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  //                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
-//                               <tr>
+  //                               <tr>
 
-//                                 <td class="p30-15" style="padding: 12px;">
+  //                                 <td class="p30-15" style="padding: 12px;">
 
 
 
-//                                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  //                                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
-//                                     <tr>
+  //                                     <tr>
 
-//                                       <td class="pb25"
+  //                                       <td class="pb25"
 
-//                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;width:50%;">
+  //                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;width:50%;">
 
-//                                         <div mc:edit="text_3"><b>Dear <span>${name}</span>,</b></div>
+  //                                         <div mc:edit="text_3"><b>Dear <span>${name}</span>,</b></div>
 
-//                                       </td>
+  //                                       </td>
 
-//                                     </tr>
+  //                                     </tr>
 
-//                                     <tr>
+  //                                     <tr>
 
-//                                       <td class="pb25"
+  //                                       <td class="pb25"
 
-//                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;width:50%;">
+  //                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;width:50%;">
 
-//                                         <div mc:edit="text_3"><span>${accommodationName} </span> has
+  //                                         <div mc:edit="text_3"><span>${accommodationName} </span> has
 
-//                                           received a request for booking of
+  //                                           received a request for booking of
 
-//                                           your Camping as per the details below. The primary guest <span>${name}</span>
+  //                                           your Camping as per the details below. The primary guest <span>${name}</span>
 
-//                                           will be
+  //                                           will be
 
-//                                           carrying a copy of this e-voucher. </div>
+  //                                           carrying a copy of this e-voucher. </div>
 
-//                                       </td>
+  //                                       </td>
 
-//                                     </tr>
+  //                                     </tr>
 
-//                                     <tr>
+  //                                     <tr>
 
-//                                       <td class="pb25"
+  //                                       <td class="pb25"
 
-//                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;width:50%;">
+  //                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;width:50%;">
 
-//                                         <div mc:edit="text_3">For your reference, Booking ID is
+  //                                         <div mc:edit="text_3">For your reference, Booking ID is
 
-//                                           <span><b>${BookingId}</b></span>.</div>
+  //                                           <span><b>${BookingId}</b></span>.</div>
 
-//                                       </td>
+  //                                       </td>
 
-//                                     </tr>
+  //                                     </tr>
 
-//                                     <tr>
+  //                                     <tr>
 
-//                                       <td class="pb25"
+  //                                       <td class="pb25"
 
-//                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;width:50%;">
+  //                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;width:50%;">
 
-//                                         <div mc:edit="text_3"><b>The amount payable to <span>${accommodationName} </span> for this booking
+  //                                         <div mc:edit="text_3"><b>The amount payable to <span>${accommodationName} </span> for this booking
 
-//                                             is <span>INR ${advancePayable}</span> as per the details below. Please email us at
+  //                                             is <span>INR ${advancePayable}</span> as per the details below. Please email us at
 
-//                                             <a href="mailto: ${ownerEmail}"
+  //                                             <a href="mailto: ${ownerEmail}"
 
-//                                               style="color: #216896;">bookings@nirwanastays.com</a> if there is any
+  //                                               style="color: #216896;">bookings@nirwanastays.com</a> if there is any
 
-//                                             discrepancy in this payment
+  //                                             discrepancy in this payment
 
-//                                             amount.</b></div>
+  //                                             amount.</b></div>
 
-//                                       </td>
+  //                                       </td>
 
-//                                     </tr>
+  //                                     </tr>
 
-//                                     <tr>
+  //                                     <tr>
 
-//                                       <td class="pb25"
+  //                                       <td class="pb25"
 
-//                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;width:100%;">
+  //                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;width:100%;">
 
-//                                         <div mc:edit="text_3">Kindly consider this e-voucher for booking confirmation
+  //                                         <div mc:edit="text_3">Kindly consider this e-voucher for booking confirmation
 
-//                                           with the
+  //                                           with the
 
-//                                           following inclusions and services. </div>
+  //                                           following inclusions and services. </div>
 
-//                                       </td>
+  //                                       </td>
 
-//                                     </tr>
+  //                                     </tr>
 
-//                                   </table>
+  //                                   </table>
 
 
 
-//                                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  //                                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
-//                                     <tr>
+  //                                     <tr>
 
-//                                       <td class="pb25"
+  //                                       <td class="pb25"
 
-//                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;width:100%;">
+  //                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;width:100%;">
 
-//                                         <div mc:edit="text_3"><b>Team <span>${accommodationName}
+  //                                         <div mc:edit="text_3"><b>Team <span>${accommodationName}
 
-//                                             </span></b></div>
+  //                                             </span></b></div>
 
-//                                       </td>
+  //                                       </td>
 
-//                                     </tr>
+  //                                     </tr>
 
-//                                     <tr>
+  //                                     <tr>
 
-//                                       <td class="pb25"
+  //                                       <td class="pb25"
 
-//                                         style="color:#878887; font-family:Lato, Arial,sans-serif; font-size:14px; line-height:22px; padding-bottom:8px;width:100%;text-align:right;">
+  //                                         style="color:#878887; font-family:Lato, Arial,sans-serif; font-size:14px; line-height:22px; padding-bottom:8px;width:100%;text-align:right;">
 
-//                                         <div mc:edit="text_3">All prices indicated below are in INR</div>
+  //                                         <div mc:edit="text_3">All prices indicated below are in INR</div>
 
-//                                       </td>
+  //                                       </td>
 
-//                                     </tr>
+  //                                     </tr>
 
-//                                   </table>
+  //                                   </table>
 
 
 
-//                                   <table class="border-table" width="100%"
+  //                                   <table class="border-table" width="100%"
 
-//                                     style="font-family: arial, sans-serif;border-collapse: collapse;width: 100%; margin-bottom: 10px;"
+  //                                     style="font-family: arial, sans-serif;border-collapse: collapse;width: 100%; margin-bottom: 10px;"
 
-//                                     cellspacing="0" cellpadding="0">
+  //                                     cellspacing="0" cellpadding="0">
 
-//                                     <tr>
+  //                                     <tr>
 
-//                                       <th class="bordr"
+  //                                       <th class="bordr"
 
-//                                         style="border: 1px solid #dddddd;border-top: 3px solid #216896;text-align: left;padding: 9px 7px 10px;color: #878887;font-family: Lato, Arial,sans-serif;font-size: 13.5px;line-height: 16px;">
+  //                                         style="border: 1px solid #dddddd;border-top: 3px solid #216896;text-align: left;padding: 9px 7px 10px;color: #878887;font-family: Lato, Arial,sans-serif;font-size: 13.5px;line-height: 16px;">
 
-//                                         BOOKING DETAILS</th>
+  //                                         BOOKING DETAILS</th>
 
-//                                       <th class="bordr"
+  //                                       <th class="bordr"
 
-//                                         style="border: 1px solid #dddddd;border-top: 3px solid #216896;text-align: left;padding: 9px 7px 10px;color: #878887;font-family: Lato, Arial,sans-serif;font-size: 13.5px;line-height: 16px;">
+  //                                         style="border: 1px solid #dddddd;border-top: 3px solid #216896;text-align: left;padding: 9px 7px 10px;color: #878887;font-family: Lato, Arial,sans-serif;font-size: 13.5px;line-height: 16px;">
 
-//                                         PAYMENT BREAKUP</th>
+  //                                         PAYMENT BREAKUP</th>
 
-//                                     </tr>
+  //                                     </tr>
 
-//                                     <tr>
-//                                         <td valign="center"
-//                                             style="border: 1px solid #dddddd; padding: 8px; color: #000000; font-family: Lato, Arial, sans-serif; font-size: 16px; line-height: 22px;">
-                                        
-//                                             <p style="padding-bottom: 5px; margin: 0px;">Mobile: <b>${mobile}</b></p>
-//                                             <p style="padding-bottom: 5px; margin: 0px;">Check In: <b>${CheckinDate}</b></p>
-//                                             <p style="padding-bottom: 5px; margin: 0px;">Check Out: <b>${CheckoutDate}</b></p>
-//                                             <p style="padding-bottom: 5px; margin: 0px;">Total Person: <b>${totalPerson}</b></p>
-                                        
-//                                         </td>
+  //                                     <tr>
+  //                                         <td valign="center"
+  //                                             style="border: 1px solid #dddddd; padding: 8px; color: #000000; font-family: Lato, Arial, sans-serif; font-size: 16px; line-height: 22px;">
 
-//                                       <td
+  //                                             <p style="padding-bottom: 5px; margin: 0px;">Mobile: <b>${mobile}</b></p>
+  //                                             <p style="padding-bottom: 5px; margin: 0px;">Check In: <b>${CheckinDate}</b></p>
+  //                                             <p style="padding-bottom: 5px; margin: 0px;">Check Out: <b>${CheckoutDate}</b></p>
+  //                                             <p style="padding-bottom: 5px; margin: 0px;">Total Person: <b>${totalPerson}</b></p>
 
-//                                         style="border: 1px solid #dddddd;text-align: left;padding: 6px 7px 8px;color: #000000;font-family: Lato, Arial,sans-serif;font-size: 14px;line-height: 16px;">
+  //                                         </td>
 
-//                                         <table style="width: 100%;">
+  //                                       <td
 
-//                                           <tr>
+  //                                         style="border: 1px solid #dddddd;text-align: left;padding: 6px 7px 8px;color: #000000;font-family: Lato, Arial,sans-serif;font-size: 14px;line-height: 16px;">
 
-//                                             <td valign="top" style="width: 100%;padding-right: 8px;">
+  //                                         <table style="width: 100%;">
 
-//                                               <p style="padding-top: 5px;padding-bottom: 10px;margin: 0px;">
+  //                                           <tr>
 
-//                                                 <b>TARRIF</b></p>
-// 						<p style="padding-bottom: 10px;margin: 0px;">Full Amount: <b style="float:right;">${full_amount}</b></p>
-//                                               <p style="padding-bottom: 10px;margin: 0px;">Discount: <b style="float:right;">${discount}</b></p>
-//                                               <p style="padding-bottom: 10px;margin: 0px;">Coupon: <b style="float:right;">${coupons}</b></p>
+  //                                             <td valign="top" style="width: 100%;padding-right: 8px;">
 
-//                                               <p style="padding-bottom: 10px;margin: 0px;">Total Amount: <b
+  //                                               <p style="padding-top: 5px;padding-bottom: 10px;margin: 0px;">
 
-//                                                   style="float:right;">${totalPrice}</b></p>
+  //                                                 <b>TARRIF</b></p>
+  // 						<p style="padding-bottom: 10px;margin: 0px;">Full Amount: <b style="float:right;">${full_amount}</b></p>
+  //                                               <p style="padding-bottom: 10px;margin: 0px;">Discount: <b style="float:right;">${discount}</b></p>
+  //                                               <p style="padding-bottom: 10px;margin: 0px;">Coupon: <b style="float:right;">${coupons}</b></p>
 
-//                                               <p style="padding-bottom: 10px;margin: 0px;">Advance Amount: <b
+  //                                               <p style="padding-bottom: 10px;margin: 0px;">Total Amount: <b
 
-//                                                   style="float:right;">${advancePayable}</b></p>
+  //                                                   style="float:right;">${totalPrice}</b></p>
 
-//                                               <p style="padding-bottom: 10px;margin: 0px;">Remaining Amount: <b
+  //                                               <p style="padding-bottom: 10px;margin: 0px;">Advance Amount: <b
 
-//                                                   style="float:right;">${remainingAmount}</b></p>
+  //                                                   style="float:right;">${advancePayable}</b></p>
 
-//                                             </td>
+  //                                               <p style="padding-bottom: 10px;margin: 0px;">Remaining Amount: <b
 
-//                                           </tr>
+  //                                                   style="float:right;">${remainingAmount}</b></p>
 
-//                                         </table>
+  //                                             </td>
 
-//                                       </td>
+  //                                           </tr>
 
-//                                     </tr>
+  //                                         </table>
 
-//                                   </table>
+  //                                       </td>
 
+  //                                     </tr>
 
+  //                                   </table>
 
-//                                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
-//                                     <tr>
 
-//                                       <td class="pb25 mobheadpb"
+  //                                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
-//                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:24px;">
+  //                                     <tr>
 
-//                                         <div mc:edit="text_3"><b>Booking Cancellation Policy:</b> From ${CheckinDate},100%
+  //                                       <td class="pb25 mobheadpb"
 
-//                                           penalty will be
+  //                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:24px;">
 
-//                                           charged. In case of no show : no refund.Booking cannot be
+  //                                         <div mc:edit="text_3"><b>Booking Cancellation Policy:</b> From ${CheckinDate},100%
 
-//                                           cancelled/modified on or after the booking date and time mentioned in
+  //                                           penalty will be
 
-//                                           the Camping Confirmation Voucher. All time mentioned above is in
+  //                                           charged. In case of no show : no refund.Booking cannot be
 
-//                                           destination time.</div>
+  //                                           cancelled/modified on or after the booking date and time mentioned in
 
-//                                       </td>
+  //                                           the Camping Confirmation Voucher. All time mentioned above is in
 
-//                                     </tr>
+  //                                           destination time.</div>
 
-//                                     <tr>
+  //                                       </td>
 
-//                                       <td class="pb25 bordr"
+  //                                     </tr>
 
-//                                         style="color:#216896;border-bottom: 3px solid #216896; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:6px;">
+  //                                     <tr>
 
-//                                         <div mc:edit="text_3"><b>Note</b></div>
+  //                                       <td class="pb25 bordr"
 
-//                                       </td>
+  //                                         style="color:#216896;border-bottom: 3px solid #216896; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:6px;">
 
-//                                     </tr>
+  //                                         <div mc:edit="text_3"><b>Note</b></div>
 
-//                                     <tr>
+  //                                       </td>
 
-//                                       <td class="pb25"
+  //                                     </tr>
 
-//                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;padding-top:8px;">
+  //                                     <tr>
 
-//                                         <div mc:edit="text_3">If your contact details have changed, please notify us so
+  //                                       <td class="pb25"
 
-//                                           that the
+  //                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;padding-top:8px;">
 
-//                                           same can be updated in our records.</div>
+  //                                         <div mc:edit="text_3">If your contact details have changed, please notify us so
 
-//                                       </td>
+  //                                           that the
 
-//                                     </tr>
+  //                                           same can be updated in our records.</div>
 
-//                                     <tr>
+  //                                       </td>
 
-//                                       <td class="pb25 mobheadpb"
+  //                                     </tr>
 
-//                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:24px;">
+  //                                     <tr>
 
-//                                         <div mc:edit="text_3">If the booking is cancelled or changed by guest at a later
+  //                                       <td class="pb25 mobheadpb"
 
-//                                           stage,
+  //                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:24px;">
 
-//                                           you will be notified and this confirmation email & nirwana stays Booking ID will be null and void.</div>
+  //                                         <div mc:edit="text_3">If the booking is cancelled or changed by guest at a later
 
-//                                       </td>
+  //                                           stage,
 
-//                                     </tr>
+  //                                           you will be notified and this confirmation email & nirwana stays Booking ID will be null and void.</div>
 
-//                                   </table>
+  //                                       </td>
 
+  //                                     </tr>
 
+  //                                   </table>
 
-//                                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
-//                                     <tr>
 
-//                                       <td>
+  //                                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
-//                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  //                                     <tr>
 
-//                                           <tr>
+  //                                       <td>
 
-//                                             <td class="pb25 bordr"
+  //                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
-//                                               style="color:#216896;border-bottom: 3px solid #216896; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:6px;">
+  //                                           <tr>
 
-//                                               <div mc:edit="text_3"><b>${accommodationName} Contact
+  //                                             <td class="pb25 bordr"
 
-//                                                   Info</b></div>
+  //                                               style="color:#216896;border-bottom: 3px solid #216896; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:6px;">
 
-//                                             </td>
+  //                                               <div mc:edit="text_3"><b>${accommodationName} Contact
 
-//                                           </tr>
+  //                                                   Info</b></div>
 
-//                                         </table>
+  //                                             </td>
 
-//                                       </td>
+  //                                           </tr>
 
-//                                     </tr>
+  //                                         </table>
 
-//                                   </table>
+  //                                       </td>
 
-//                                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  //                                     </tr>
 
-//                                     <tr>
+  //                                   </table>
 
-//                                       <td style="padding-top:8px;padding-bottom:8px;width:50%;">
+  //                                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
-//                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  //                                     <tr>
 
-//                                           <tr>
+  //                                       <td style="padding-top:8px;padding-bottom:8px;width:50%;">
 
-//                                             <td class="pb25"
+  //                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
-//                                               style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px;">
+  //                                           <tr>
 
-//                                               <div mc:edit="text_3"><b>${accommodationName} </b></div>
+  //                                             <td class="pb25"
 
-//                                             </td>
+  //                                               style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px;">
 
-//                                           </tr>
+  //                                               <div mc:edit="text_3"><b>${accommodationName} </b></div>
 
-//                                           <tr>
+  //                                             </td>
 
-//                                             <td class="pb25"
+  //                                           </tr>
 
-//                                               style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px;">
+  //                                           <tr>
 
-//                                               <div mc:edit="text_3">At- <span>${accommodationAddress}</span></div>
+  //                                             <td class="pb25"
 
-//                                             </td>
+  //                                               style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px;">
 
-//                                           </tr>
+  //                                               <div mc:edit="text_3">At- <span>${accommodationAddress}</span></div>
 
-//                                           <tr>
+  //                                             </td>
 
-//                                             <td class="pb25"
+  //                                           </tr>
 
-//                                               style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px;">
+  //                                           <tr>
 
-//                                               <div mc:edit="text_3"><span>pawna lake</span></div>
+  //                                             <td class="pb25"
 
-//                                             </td>
+  //                                               style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px;">
 
-//                                           </tr>
+  //                                               <div mc:edit="text_3"><span>pawna lake</span></div>
 
-//                                           <!--<tr>
+  //                                             </td>
 
-// 																										<td class="pb25" style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px;">
+  //                                           </tr>
 
-// 																											<div mc:edit="text_3"><span>Maharashtra</span>, <span>India</span></div>
+  //                                           <!--<tr>
 
-// 																										</td>
+  // 																										<td class="pb25" style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px;">
 
-// 																									</tr>-->
+  // 																											<div mc:edit="text_3"><span>Maharashtra</span>, <span>India</span></div>
 
-//                                           <tr>
+  // 																										</td>
 
-//                                             <td class="pb25"
+  // 																									</tr>-->
 
-//                                               style="color:#216896; font-family:Lato, Arial,sans-serif; font-size:14px; line-height:22px;">
+  //                                           <tr>
 
-//                                               <div mc:edit="text_3">
+  //                                             <td class="pb25"
 
-//                                                 <a href="http://maps.google.com/maps?q=${latitude},${longitude}"
+  //                                               style="color:#216896; font-family:Lato, Arial,sans-serif; font-size:14px; line-height:22px;">
 
-//                                                   style="color: #216896;">Google Maps Link</a>
+  //                                               <div mc:edit="text_3">
 
-//                                               </div>
+  //                                                 <a href="http://maps.google.com/maps?q=${latitude},${longitude}"
 
-//                                             </td>
+  //                                                   style="color: #216896;">Google Maps Link</a>
 
-//                                           </tr>
+  //                                               </div>
 
-//                                         </table>
+  //                                             </td>
 
-//                                       </td>
+  //                                           </tr>
 
-//                                       <td style="padding-top:8px;padding-bottom:8px;width:50%;">
+  //                                         </table>
 
-//                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  //                                       </td>
 
-//                                           <tr>
+  //                                       <td style="padding-top:8px;padding-bottom:8px;width:50%;">
 
-//                                             <td class="pb25"
+  //                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
-//                                               style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:14px; line-height:22px;">
+  //                                           <tr>
 
-//                                               <div mc:edit="text_3">
+  //                                             <td class="pb25"
 
-//                                                 <span><b>Email- </b></span><span><a
+  //                                               style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:14px; line-height:22px;">
 
-//                                                     href="mailto:${ownerEmail}"
+  //                                               <div mc:edit="text_3">
 
-//                                                     style="color: #164e6f;"><b>bookings@nirwanastays.com</b></a></span>
+  //                                                 <span><b>Email- </b></span><span><a
 
-//                                               </div>
+  //                                                     href="mailto:${ownerEmail}"
 
-//                                             </td>
+  //                                                     style="color: #164e6f;"><b>bookings@nirwanastays.com</b></a></span>
 
-//                                           </tr>
+  //                                               </div>
 
-//                                           <tr>
+  //                                             </td>
 
-//                                             <td class="pb25"
+  //                                           </tr>
 
-//                                               style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:14px; line-height:22px;">
+  //                                           <tr>
 
-//                                               <div mc:edit="text_3">
+  //                                             <td class="pb25"
 
-//                                                 <span><b>Contact Number- </b></span>
+  //                                               style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:14px; line-height:22px;">
 
-//                                                 <span>${ownerName}</span>- <span>${ownerPhone}</span>
+  //                                               <div mc:edit="text_3">
 
-//                                               </div>
+  //                                                 <span><b>Contact Number- </b></span>
 
-//                                             </td>
+  //                                                 <span>${ownerName}</span>- <span>${ownerPhone}</span>
 
-//                                           </tr>
+  //                                               </div>
 
-//                                         </table>
+  //                                             </td>
 
-//                                       </td>
+  //                                           </tr>
 
-//                                     </tr>
+  //                                         </table>
 
-//                                   </table>
+  //                                       </td>
 
+  //                                     </tr>
 
+  //                                   </table>
 
 
 
 
 
-//                                   <table width="100%" border="0" cellspacing="0" cellpadding="0"
 
-//                                     style="padding-top: 10px;border-top:1px solid #dddddd;">
 
-//                                     <tr>
+  //                                   <table width="100%" border="0" cellspacing="0" cellpadding="0"
 
-//                                       <td class="pb25"
+  //                                     style="padding-top: 10px;border-top:1px solid #dddddd;">
 
-//                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;">
+  //                                     <tr>
 
-//                                         <div mc:edit="text_3"><b>Note</b> - Please do not reply to this email. It has
+  //                                       <td class="pb25"
 
-//                                           been sent from an
+  //                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:8px;">
 
-//                                           email account that is not monitored. To ensure that you receive
+  //                                         <div mc:edit="text_3"><b>Note</b> - Please do not reply to this email. It has
 
-//                                           communication related to your booking from Nirwana stays , please add <a href="mailto:bookings@nirwanastays.com "
+  //                                           been sent from an
 
-//                                             style="color: #164e6f;"><b>bookings@nirwanastays.com </b></a> to your contact list
+  //                                           email account that is not monitored. To ensure that you receive
 
-//                                           and
+  //                                           communication related to your booking from Nirwana stays , please add <a href="mailto:bookings@nirwanastays.com "
 
-//                                           address book.</div>
+  //                                             style="color: #164e6f;"><b>bookings@nirwanastays.com </b></a> to your contact list
 
-//                                       </td>
+  //                                           and
 
-//                                     </tr>
+  //                                           address book.</div>
 
-//                                   </table>
+  //                                       </td>
 
-//                                    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding-top: 15px;">
+  //                                     </tr>
 
-//                                     <tr>
+  //                                   </table>
 
-//                                       <td class="pb25 bordr"
+  //                                    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding-top: 15px;">
 
-//                                         style="color:#216896;border-bottom: 3px solid #216896; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:6px;">
+  //                                     <tr>
 
-//                                         <div mc:edit="text_3"><b>Things to Carry</b></div>
+  //                                       <td class="pb25 bordr"
 
-//                                       </td>
+  //                                         style="color:#216896;border-bottom: 3px solid #216896; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-bottom:6px;">
 
-//                                     </tr>
+  //                                         <div mc:edit="text_3"><b>Things to Carry</b></div>
 
-//                                     <tr>
+  //                                       </td>
 
-//                                       <td class="pb25"
+  //                                     </tr>
 
-//                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-top:8px; padding-bottom:8px;">
+  //                                     <tr>
 
-//                                         • Always good to carry extra pair of clothes<br>
+  //                                       <td class="pb25"
 
-//                                         • Winter and warm clothes as it will be cold night<br>
+  //                                         style="color:#000000; font-family:Lato, Arial,sans-serif; font-size:15px; line-height:22px; padding-top:8px; padding-bottom:8px;">
 
-//                                         • Toothbrush and paste (toiletries)<br>
+  //                                         • Always good to carry extra pair of clothes<br>
 
-//                                         • Any other things you feel necessary<br>
+  //                                         • Winter and warm clothes as it will be cold night<br>
 
-//                                         • Personal medicine if any
+  //                                         • Toothbrush and paste (toiletries)<br>
 
-//                                       </td>
+  //                                         • Any other things you feel necessary<br>
 
-//                                     </tr>
+  //                                         • Personal medicine if any
 
-//                                   </table>
+  //                                       </td>
 
-//                                 </td>
+  //                                     </tr>
 
-//                               </tr>
+  //                                   </table>
 
-//                             </table>
+  //                                 </td>
 
-//                           </td>
+  //                               </tr>
 
-//                         </tr>
+  //                             </table>
 
-//                       </table>
+  //                           </td>
 
-//                     </td>
+  //                         </tr>
 
-//                   </tr>
+  //                       </table>
 
-//                 </table>
+  //                     </td>
 
-//               </td>
+  //                   </tr>
 
-//               <td class="m-td" valign="top" style="font-size:0pt; line-height:0pt; text-align:left;">
+  //                 </table>
 
-//                 <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff" class="border"
+  //               </td>
 
-//                   style="font-size:0pt; line-height:0pt; text-align:left; width:100%; min-width:100%;">
+  //               <td class="m-td" valign="top" style="font-size:0pt; line-height:0pt; text-align:left;">
 
-//                   <tr>
+  //                 <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff" class="border"
 
-//                     <td bgcolor="#f4f4f4" height="150" class="border"
+  //                   style="font-size:0pt; line-height:0pt; text-align:left; width:100%; min-width:100%;">
 
-//                       style="font-size:0pt; line-height:0pt; text-align:left; width:100%; min-width:100%;">&nbsp;</td>
+  //                   <tr>
 
-//                   </tr>
+  //                     <td bgcolor="#f4f4f4" height="150" class="border"
 
-//                 </table>
+  //                       style="font-size:0pt; line-height:0pt; text-align:left; width:100%; min-width:100%;">&nbsp;</td>
 
-//               </td>
+  //                   </tr>
 
-//             </tr>
+  //                 </table>
 
-//           </table>
+  //               </td>
 
-//         </div>
+  //             </tr>
 
+  //           </table>
 
+  //         </div>
 
-//       </td>
 
-//     </tr>
 
-//   </table>
+  //       </td>
 
-// </body>
+  //     </tr>
 
+  //   </table>
 
+  // </body>
 
-// </html>`;
+
+
+  // </html>`;
 
   // ... (rest of the HTML template remains the same) ...
 
@@ -3228,17 +3241,17 @@ async function sendPdfEmail(params) {
     port: 587,
 
     auth: {
-      user: "bookings@nirwanastays.com" ,
+      user: "bookings@nirwanastays.com",
 
       pass: "Nirwanastays@6484",
     },
   });
 
   const mailOptions = {
-    from:"bookings@nirwanastays.com",
+    from: "bookings@nirwanastays.com",
     to: email.trim(),
-	cc: ownerEmail,
-	bcc: "nirwanastays@gmail.com",
+    cc: ownerEmail,
+    bcc: "nirwanastays@gmail.com",
     subject: "NirwanaStays Resort Booking",
 
     html: html, // Make sure HTML variable is defined
@@ -3247,8 +3260,8 @@ async function sendPdfEmail(params) {
   // const mailOptions_villa = {
   //   from:"bookings@nirwanastays.com",
   //   to: email.trim(),
-	// cc: ownerEmail,
-	// bcc: "nirwanastays@gmail.com",
+  // cc: ownerEmail,
+  // bcc: "nirwanastays@gmail.com",
   //   subject: "NirwanaStays Resort Booking",
 
   //   html: html_villa, // Make sure HTML variable is defined
@@ -3373,10 +3386,10 @@ router.post("/success/verify/:txnid", async (req, res) => {
       const ownerPhone = user[0]?.phoneNumber;
       console.log("📧 Owner email:", ownerEmail);
 
-      
+
 
       // If you want to enable email sending later, you can log like this:
-      
+
       console.log("🚀 Attempting to send confirmation email...");
       try {
         await sendPdfEmail({
