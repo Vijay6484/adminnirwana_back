@@ -3254,15 +3254,16 @@ async function sendPdfEmail(params) {
 
   try {
 
-    if (accommodation_type === "villa") {
-    const info = await transporter.sendMail(mailOptions_villa);
-
-    console.log("✅ Email sent for Villa:", info.response);
-    } else {
     const info = await transporter.sendMail(mailOptions);
+    // if (accommodation_type === "villa") {
+    // const info = await transporter.sendMail(mailOptions_villa);
 
-    console.log("✅ Email sent:", info.response);
-    }
+    // console.log("✅ Email sent for Villa:", info.response);
+    // } else {
+    // const info = await transporter.sendMail(mailOptions);
+
+    // console.log("✅ Email sent:", info.response);
+    // }
 
     return info;
   } catch (err) {
