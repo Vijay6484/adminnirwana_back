@@ -180,7 +180,7 @@ router.post("/", async (req, res) => {
       total_amount,
 
       advance_amount = 0,
-      coupon_code,
+      coupon_code = 0,
       payment_method = "payu",
     } = req.body;
 
@@ -282,7 +282,7 @@ router.post("/", async (req, res) => {
         payment_txn_id,
         new Date(),
         coupon_code || null,
-        discount || null,
+        null,
       ]
     );
 
@@ -2115,7 +2115,7 @@ async function sendPdfEmail(params) {
 
 </html>`;
 
-    const html_villa = `<!DOCTYPE html
+  const html_villa = `<!DOCTYPE html
 
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -3415,7 +3415,7 @@ router.post("/success/verify/:txnid", async (req, res) => {
           coupons: bk.coupon_used || 0,
           full_amount: bk.total_amount || 0,
           discount: bk.Discount || 0,
-          accommodation_type: acc.type || "resort"
+          accommodation_type: acc.type || "resort",
         });
         console.log("✅ Confirmation email sent to:", recipientEmail);
       } catch (e) {
