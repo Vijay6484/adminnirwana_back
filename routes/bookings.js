@@ -536,7 +536,8 @@ router.post("/offline", async (req, res) => {
       rooms : booking.rooms || "",
       coupon: coupon || "",
       discount : discount || "",
-      full_amount : full_amount || ""
+      full_amount : full_amount || "",
+      accommodation_type : "",
     });
 
     res.json({
