@@ -3227,7 +3227,7 @@ async function sendPdfEmail(params) {
 
     secure: false,
 
-    port: 587,
+    port: 465,
 
     auth: {
       user: "bookings@nirwanastays.com" ,
