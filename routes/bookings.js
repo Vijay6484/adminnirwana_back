@@ -3225,14 +3225,14 @@ async function sendPdfEmail(params) {
   const transporter = nodemailer.createTransport({
     host: "smtp.hostinger.com",
 
-    secure: true,
+    secure: false,
 
     port: 587,
 
     auth: {
-      user: "bookings@nirwanastays.com" ,
+      user: "team@digitaldiariess.com" ,
 
-      pass: "Nirwanastays@6484",
+      pass: "Digitaldiaries@12345",
     },
   });
 
