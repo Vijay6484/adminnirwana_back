@@ -3246,15 +3246,15 @@ async function sendPdfEmail(params) {
     html: html, // Make sure HTML variable is defined
   };
 
-  const mailOptions_villa = {
-    from:"bookings@nirwanastays.com",
-    to: email.trim(),
-	cc: ownerEmail,
-	bcc: "nirwanastays@gmail.com",
-    subject: "NirwanaStays Resort Booking",
+  // const mailOptions_villa = {
+  //   from:"bookings@nirwanastays.com",
+  //   to: email.trim(),
+	// cc: ownerEmail,
+	// bcc: "nirwanastays@gmail.com",
+  //   subject: "NirwanaStays Resort Booking",
 
-    html: html_villa, // Make sure HTML variable is defined
-  };
+  //   html: html_villa, // Make sure HTML variable is defined
+  // };
 
   try {
 
