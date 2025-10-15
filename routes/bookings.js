@@ -3409,7 +3409,7 @@ router.post("/success/verify/:txnid", async (req, res) => {
           coupons: bk.coupon_used || 0,
           full_amount: bk.total_amount || 0,
           discount: bk.Discount || 0,
-          accommodation_type: acc.type || "resort",
+          accommodation_type: acc.type || "resort"
         });
         console.log("✅ Confirmation email sent to:", recipientEmail);
       } catch (e) {
