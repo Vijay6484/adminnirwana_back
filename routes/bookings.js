@@ -955,7 +955,7 @@ async function sendPdfEmail(params) {
     longitude,
 
     ownerEmail,
-	  coupon,
+	  coupons,
 	  discount,
 	  full_amount,
 	  rooms,
