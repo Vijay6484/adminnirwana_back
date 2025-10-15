@@ -470,23 +470,17 @@ router.post("/offline", async (req, res) => {
 
     // Original code context: Fetching owner details for a booking
     if (booking.owner_id) {
-      // Note: The 'connection.execute' returns an array where the first element
-      // is the rows array. We destructure it directly into 'user'.
-      const [[user]] = await connection.execute(
-        `
-        SELECT email, phoneNumber, name 
-        FROM users 
-        WHERE id = ?
-        `,
-        [booking.owner_id]
-      );
+  const [rows] = await connection.execute(
+    `SELECT email, phoneNumber, name FROM users WHERE id = ?`,
+    [booking.owner_id]
+  );
 
-      // If a user is found, their details are available on the 'user' object.
-      const ownerEmail = user?.email || null;
-      const ownerName = user?.name || null;
-      const ownerNumber = user?.number || null;
+  const user = rows[0] || {};
+  const ownerEmail = user.email || null;
+  const ownerName = user.name || null;
+  const ownerNumber = user.phoneNumber || null;
+}
 
-    }
 
     await connection.commit();
 
