@@ -282,7 +282,7 @@ router.post("/", async (req, res) => {
         payment_txn_id,
         new Date(),
         coupon_code || null,
-        null,
+         discount  || null,
       ]
     );
 
