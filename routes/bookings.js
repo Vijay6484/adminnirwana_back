@@ -3467,7 +3467,7 @@ router.get("/details/:txnid", async (req, res) => {
     // Step 2: Fetch accommodation details
 
     const [accommodations] = await pool.execute(
-      `SELECT name, address, latitude, longitude ,owner_id FROM accommodations WHERE id = ?`,
+      `SELECT name, address, latitude, longitude ,owner_id, type FROM accommodations WHERE id = ?`,
 
       [booking.accommodation_id]
     );
@@ -3476,13 +3476,15 @@ router.get("/details/:txnid", async (req, res) => {
 
     const owner_id = accommodation.owner_id;
 
-    const [user] = await pool.execute(`SELECT email FROM users WHERE id = ?`, [
+    const [users] = await pool.execute(`SELECT email,name,phoneNumber FROM users WHERE id = ?`, [
       owner_id,
     ]);
 
-    const ownerEmail = user[0].email;
-	Const ownerName =user[0].name;
-	Const ownerMobile = user[0].phoneNumber;
+    const user = users[0] || {};
+
+    const ownerEmail = user.email;
+	  const ownerName =user.name;
+	  const ownerMobile = user.phoneNumber;
 
     const today = new Date();
 
@@ -3502,8 +3504,8 @@ router.get("/details/:txnid", async (req, res) => {
       accommodation,
 
       ownerEmail,
-		ownerName,
-		ownerMobile,
+		  ownerName,
+		  ownerMobile,
 
       bookedDate,
     });
