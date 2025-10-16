@@ -465,6 +465,8 @@ router.post("/offline", async (req, res) => {
     );
 
 
+
+
     // Original code context: Fetching owner details for a booking
     const [rows] = await connection.execute(
       `SELECT email, phoneNumber, name FROM users WHERE id = ?`,
@@ -489,56 +491,56 @@ router.post("/offline", async (req, res) => {
 
     const remainingAmount = booking.total_amount - booking.advance_amount;
 
-    // await sendPdfEmail({
-    //   email: booking.guest_email,
+    await sendPdfEmail({
+      email: booking.guest_email,
 
-    //   name: booking.guest_name,
+      name: booking.guest_name,
 
-    //   BookingId: booking.id,
+      BookingId: booking.id,
 
-    //   BookingDate: formatDate(booking.created_at),
+      BookingDate: formatDate(booking.created_at),
 
-    //   CheckinDate: formatDate(booking.check_in),
+      CheckinDate: formatDate(booking.check_in),
 
-    //   CheckoutDate: formatDate(booking.check_out),
+      CheckoutDate: formatDate(booking.check_out),
 
-    //   totalPrice: booking.total_amount,
+      totalPrice: booking.total_amount,
 
-    //   advancePayable: booking.advance_amount,
+      advancePayable: booking.advance_amount,
 
-    //   remainingAmount: remainingAmount.toFixed(2),
+      remainingAmount: remainingAmount.toFixed(2),
 
-    //   mobile: booking.guest_phone,
+      mobile: booking.guest_phone,
 
-    //   totalPerson: booking.adults + booking.children,
+      totalPerson: booking.adults + booking.children,
 
-    //   adult: booking.adults,
+      adult: booking.adults,
 
-    //   child: booking.children,
+      child: booking.children,
 
-    //   vegCount: booking.food_veg,
+      vegCount: booking.food_veg,
 
-    //   nonvegCount: booking.food_nonveg,
+      nonvegCount: booking.food_nonveg,
 
-    //   joinCount: booking.food_jain,
+      joinCount: booking.food_jain,
 
-    //   accommodationName: booking.accommodation_name || "",
+      accommodationName: booking.accommodation_name || "",
 
-    //   accommodationAddress: booking.accommodation_address || "",
+      accommodationAddress: booking.accommodation_address || "",
 
-    //   latitude: booking.latitude || "",
+      latitude: booking.latitude || "",
 
-    //   longitude: booking.longitude || "",
+      longitude: booking.longitude || "",
 
-    //   ownerEmail: ownerEmail || "",
-    //   ownerName: ownerName || "",
-    //   ownerPhone: ownerNumber || "",
+      ownerEmail: ownerEmail || "",
+      ownerName: ownerName || "",
+      ownerPhone: ownerNumber || "",
 
-    //   rooms: booking.rooms || "",
-    //   coupons: coupon || "",
-    //   discount: discount || "",
-    //   full_amount: full_amount || "",
-    // });
+      rooms: booking.rooms || "",
+      coupons: coupon || "",
+      discount: discount || "",
+      full_amount: full_amount || "",
+    });
 
     res.json({
       success: true,
@@ -693,224 +695,6 @@ router.post("/payments/payu", async (req, res) => {
   }
 });
 
-
-// // GET /payment-status/:txnid - Check payment status
-
-// router.get('/payment-status/:txnid', async (req, res) => {
-
-//   try {
-
-//     const { txnid } = req.params;
-
-//     const { force_payu } = req.query;
-
-//     if (!txnid) {
-
-//       return res.status(400).json({
-
-//         success: false,
-
-//         error: 'Transaction ID is required'
-
-//       });
-
-//     }
-
-//     const [bookings] = await pool.execute(
-
-//       'SELECT id, payment_status, payment_txn_id, total_amount, advance_amount, created_at FROM bookings WHERE payment_txn_id = ?',
-
-//       [txnid]
-
-//     );
-
-//     if (bookings.length === 0) {
-
-//       return res.status(404).json({
-
-//         success: false,
-
-//         error: 'Transaction not found'
-
-//       });
-
-//     }
-
-//     const booking = bookings[0];
-
-//     const shouldCheckPayU = force_payu === 'true' ||
-
-//                            booking.payment_status === 'failed' ||
-
-//                            booking.payment_status === 'pending';
-
-//     if (!shouldCheckPayU && booking.payment_status === 'success') {
-
-//       return res.json({
-
-//         success: true,
-
-//         data: {
-
-//           txnid,
-
-//           status: booking.payment_status,
-
-//           source: 'database',
-
-//           booking_id: booking.id,
-
-//           amount: booking.advance_amount || booking.total_amount,
-
-//           message: 'Payment already confirmed as successful'
-
-//         }
-
-//       });
-
-//     }
-
-//     try {
-
-//       const payuClient = new PayU({ key: payu_key, salt: payu_salt });
-
-//       const verifiedData = await payuClient.verifyPayment(txnid);
-
-//       if (!verifiedData || !verifiedData.transaction_details || !verifiedData.transaction_details[txnid]) {
-
-//         return res.json({
-
-//           success: true,
-
-//           data: {
-
-//             txnid,
-
-//             status: booking.payment_status,
-
-//             source: 'database',
-
-//             booking_id: booking.id,
-
-//             amount: booking.advance_amount || booking.total_amount,
-
-//             warning: 'PayU verification returned no data - check merchant dashboard manually',
-
-//             payu_response: verifiedData
-
-//           }
-
-//         });
-
-//       }
-
-//       const transaction = verifiedData.transaction_details[txnid];
-
-//       let finalStatus = 'pending';
-
-//       if (transaction.status === 'success') {
-
-//         finalStatus = 'success';
-
-//       } else if (transaction.status === 'failure' || transaction.status === 'failed') {
-
-//         finalStatus = 'failed';
-
-//       }
-
-//       if (finalStatus !== booking.payment_status) {
-
-//         await pool.execute(
-
-//           'UPDATE bookings SET payment_status = ? WHERE payment_txn_id = ?',
-
-//           [finalStatus, txnid]
-
-//         );
-
-//       }
-
-//       return res.json({
-
-//         success: true,
-
-//         data: {
-
-//           txnid,
-
-//           status: finalStatus,
-
-//           source: 'payu',
-
-//           booking_id: booking.id,
-
-//           amount: transaction.amount || booking.advance_amount || booking.total_amount,
-
-//           payment_id: transaction.mihpayid,
-
-//           payment_mode: transaction.mode,
-
-//           bank_ref_num: transaction.bank_ref_num,
-
-//           payu_status: transaction.status,
-
-//           status_updated: finalStatus !== booking.payment_status,
-
-//           original_db_status: booking.payment_status
-
-//         }
-
-//       });
-
-//     } catch (payuError) {
-
-//       return res.json({
-
-//         success: true,
-
-//         data: {
-
-//           txnid,
-
-//           status: booking.payment_status,
-
-//           source: 'database',
-
-//           booking_id: booking.id,
-
-//           amount: booking.advance_amount || booking.total_amount,
-
-//           error: 'PayU verification failed',
-
-//           error_details: payuError.message,
-
-//           recommendation: 'Check PayU merchant dashboard manually'
-
-//         }
-
-//       });
-
-//     }
-
-//   } catch (error) {
-
-//     console.error('Error checking payment status:', error);
-
-//     res.status(500).json({
-
-//       success: false,
-
-//       error: 'Failed to check payment status',
-
-//       details: process.env.NODE_ENV === 'development' ? error.message : undefined
-
-//     });
-
-//   }
-
-// });
-
-// POST /verify/:txnid - Handle PayU callback (UPDATED)
 
 
 
