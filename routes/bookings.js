@@ -3481,6 +3481,8 @@ router.get("/details/:txnid", async (req, res) => {
     ]);
 
     const ownerEmail = user[0].email;
+	Const ownerName =user[0].name;
+	Const ownerMobile = user[0].phoneNumber;
 
     const today = new Date();
 
@@ -3500,6 +3502,8 @@ router.get("/details/:txnid", async (req, res) => {
       accommodation,
 
       ownerEmail,
+		ownerName,
+		ownerMobile,
 
       bookedDate,
     });
