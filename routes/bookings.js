@@ -464,23 +464,17 @@ router.post("/offline", async (req, res) => {
       [booking_id]
     );
 
-    let ownerEmail = null;
-let ownerName = null;
-let ownerNumber = null;
-    // Get owner email using owner_id
 
     // Original code context: Fetching owner details for a booking
-    if (booking.owner_id) {
-  const [rows] = await connection.execute(
-    `SELECT email, phoneNumber, name FROM users WHERE id = ?`,
-    [booking.owner_id]
-  );
+    const [rows] = await connection.execute(
+      `SELECT email, phoneNumber, name FROM users WHERE id = ?`,
+      [booking.owner_id]
+    );
+    const user = rows[0] || {};
+    const ownerEmail = user.email;
+    const ownerName = user.name;
+    const ownerNumber = user.phoneNumber;
 
-  const user = rows[0] || {};
-  const ownerEmail = user.email || null;
-  const ownerName = user.name || null;
-  const ownerNumber = user.phoneNumber || null;
-}
 
 
     await connection.commit();
@@ -3253,10 +3247,10 @@ async function sendPdfEmail(params) {
   };
 
   const mailOptions_villa = {
-    from:"bookings@nirwanastays.com",
+    from: "bookings@nirwanastays.com",
     to: email.trim(),
-  cc: ownerEmail,
-  bcc: "nirwanastays@gmail.com",
+    cc: ownerEmail,
+    bcc: "nirwanastays@gmail.com",
     subject: "NirwanaStays Resort Booking",
 
     html: html_villa, // Make sure HTML variable is defined
@@ -3266,13 +3260,13 @@ async function sendPdfEmail(params) {
 
     // const info = await transporter.sendMail(mailOptions);
     if (accommodation_type === "villa") {
-    const info = await transporter.sendMail(mailOptions_villa);
+      const info = await transporter.sendMail(mailOptions_villa);
 
-    console.log("✅ Email sent for Villa:", info.response);
+      console.log("✅ Email sent for Villa:", info.response);
     } else {
-    const info = await transporter.sendMail(mailOptions);
+      const info = await transporter.sendMail(mailOptions);
 
-    console.log("✅ Email sent:", info.response);
+      console.log("✅ Email sent:", info.response);
     }
 
     return info;
@@ -3484,8 +3478,8 @@ router.get("/details/:txnid", async (req, res) => {
     const user = users[0] || {};
 
     const ownerEmail = user.email;
-	  const ownerName =user.name;
-	  const ownerMobile = user.phoneNumber;
+    const ownerName = user.name;
+    const ownerMobile = user.phoneNumber;
 
     const today = new Date();
 
@@ -3505,8 +3499,8 @@ router.get("/details/:txnid", async (req, res) => {
       accommodation,
 
       ownerEmail,
-		  ownerName,
-		  ownerMobile,
+      ownerName,
+      ownerMobile,
 
       bookedDate,
     });
