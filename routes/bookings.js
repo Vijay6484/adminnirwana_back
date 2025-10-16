@@ -3043,7 +3043,7 @@ async function sendPdfEmail(params) {
   try {
 
     // const info = await transporter.sendMail(mailOptions);
-    if (accommodation_type === "villa") {
+    if (accommodation_type === "Villa") {
       const info = await transporter.sendMail(mailOptions_villa);
 
       console.log("✅ Email sent for Villa:", info.response);
