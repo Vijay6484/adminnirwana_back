@@ -3365,16 +3365,15 @@ router.post("/success/verify/:txnid", async (req, res) => {
       const owner_id = acc.owner_id;
       console.log("👤 Owner ID:", owner_id);
 
-      const [users] = await pool.execute(
-        `SELECT email,name,phoneNumber FROM users WHERE id = ?`,
-        [owner_id]
-      );
-      console.log("👨 Owner fetched:", user);
-      const user = users[0] || {};
-      const ownerName = user.name;
-      const ownerEmail = user.email;
-      const ownerPhone = user.phoneNumber;
-      console.log("📧 Owner email:", ownerEmail);
+      const [users] = await pool.execute(`SELECT email,name,phoneNumber FROM users WHERE id = ?`, [
+      owner_id,
+    ]);
+
+    const user = users[0] || {};
+
+    const ownerEmail = user.email;
+    const ownerName = user.name;
+    const ownerMobile = user.phoneNumber;
 
 
 
@@ -3405,7 +3404,7 @@ router.post("/success/verify/:txnid", async (req, res) => {
           longitude: acc.longitude || "",
           ownerEmail: ownerEmail || "",
           ownerName: ownerName || "",
-          ownerPhone: ownerPhone || "",
+          ownerPhone: ownerMobile || "",
           rooms: bk.rooms || 0,
           coupons: bk.coupon_used || 0,
           full_amount: bk.total_amount || 0,
