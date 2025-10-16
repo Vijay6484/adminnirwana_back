@@ -3382,37 +3382,38 @@ router.post("/success/verify/:txnid", async (req, res) => {
 
       console.log("🚀 Attempting to send confirmation email...");
       try {
-        await sendPdfEmail({
-          email: recipientEmail,
-          name: bk.guest_name,
-          BookingId: bk.id,
-          BookingDate: formattedDate,
-          CheckinDate: formatDate(bk.check_in),
-          CheckoutDate: formatDate(bk.check_out),
-          totalPrice: (bk.total_amount - bk.discount),
-          advancePayable: bk.advance_amount,
-          remainingAmount: remainingAmount.toFixed(2),
-          mobile: bk.guest_phone,
-          totalPerson: bk.adults + bk.children,
-          adult: bk.adults,
-          child: bk.children,
-          vegCount: bk.food_veg,
-          nonvegCount: bk.food_nonveg,
-          joinCount: bk.food_jain,
-          accommodationName: acc.name || "",
-          accommodationAddress: acc.address || "",
-          latitude: acc.latitude || "",
-          longitude: acc.longitude || "",
-          ownerEmail: ownerEmail || "",
-          ownerName: ownerName || "",
-          ownerPhone: ownerPhone || "",
-          rooms: bk.rooms || 0,
-          coupons: bk.coupon_used || 0,
-          full_amount: bk.total_amount || 0,
-          discount: bk.Discount || 0,
-          accommodation_type: acc.type || "resort",
-        });
-        console.log("✅ Confirmation email sent to:", recipientEmail);
+        // await sendPdfEmail({
+        //   email: recipientEmail,
+        //   name: bk.guest_name,
+        //   BookingId: bk.id,
+        //   BookingDate: formattedDate,
+        //   CheckinDate: formatDate(bk.check_in),
+        //   CheckoutDate: formatDate(bk.check_out),
+        //   totalPrice: (bk.total_amount - bk.discount),
+        //   advancePayable: bk.advance_amount,
+        //   remainingAmount: remainingAmount.toFixed(2),
+        //   mobile: bk.guest_phone,
+        //   totalPerson: bk.adults + bk.children,
+        //   adult: bk.adults,
+        //   child: bk.children,
+        //   vegCount: bk.food_veg,
+        //   nonvegCount: bk.food_nonveg,
+        //   joinCount: bk.food_jain,
+        //   accommodationName: acc.name || "",
+        //   accommodationAddress: acc.address || "",
+        //   latitude: acc.latitude || "",
+        //   longitude: acc.longitude || "",
+        //   ownerEmail: ownerEmail || "",
+        //   ownerName: ownerName || "",
+        //   ownerPhone: ownerPhone || "",
+        //   rooms: bk.rooms || 0,
+        //   coupons: bk.coupon_used || 0,
+        //   full_amount: bk.total_amount || 0,
+        //   discount: bk.Discount || 0,
+        //   accommodation_type: acc.type || "resort",
+        // });
+        // console.log("✅ Confirmation email sent to:", recipientEmail);
+        console.log("testing")
       } catch (e) {
         console.error("❌ Email sending failed:", e.message);
       }
