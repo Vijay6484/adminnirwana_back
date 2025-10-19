@@ -70,7 +70,9 @@ routes.get('/accommodations', async (req, res) => {
                 MaxPersonVilla,
                 RatePersonVilla,
                 created_at,
-                updated_at
+                updated_at,
+                MaxPersonVilla,
+                RatePerPerson
             FROM accommodations
         `;
 
