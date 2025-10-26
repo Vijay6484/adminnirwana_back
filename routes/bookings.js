@@ -490,6 +490,7 @@ router.post("/offline", async (req, res) => {
     };
 
     const remainingAmount = booking.total_amount - booking.advance_amount;
+    const acc = accommodations[0] || {};
 
     await sendPdfEmail({
       email: booking.guest_email,
@@ -540,7 +541,7 @@ router.post("/offline", async (req, res) => {
       coupons: coupon || "",
       discount: discount || "",
       full_amount: full_amount || "",
-      accommodation_type:"Cottage",
+      accommodation_type: acc.type || "resort",
     });
 
     res.json({
