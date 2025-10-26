@@ -479,7 +479,7 @@ router.post("/offline", async (req, res) => {
 
 
 
-    await connection.commit();
+    
 
     const formatDate = (dateStr) => {
       const d = new Date(dateStr);
@@ -543,6 +543,7 @@ router.post("/offline", async (req, res) => {
 	    accommodation_type : booking.accommodation_type || "resort"
     });
 
+    await connection.commit();
     res.json({
       success: true,
 
