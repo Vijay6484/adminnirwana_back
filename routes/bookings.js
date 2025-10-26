@@ -538,9 +538,9 @@ router.post("/offline", async (req, res) => {
 
       rooms: booking.rooms || "",
       coupons: coupon || "",
-      discount: discount || "",
+      discount: discount || "0",
       full_amount: full_amount || "",
-	    accommodation_type : "cottage" || ""
+	    accommodation_type : booking.accommodation_type || "resort"
     });
 
     res.json({
@@ -557,7 +557,7 @@ router.post("/offline", async (req, res) => {
 
     console.error("Error creating booking:", error);
 
-    res.status(500).json({
+    res.status(200).json({
       success: false,
 
       error: "Failed to create booking",
