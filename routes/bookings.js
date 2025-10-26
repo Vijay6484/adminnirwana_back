@@ -558,7 +558,7 @@ router.post("/offline", async (req, res) => {
 
     console.error("Error creating booking:", error);
 
-    res.status(200).json({
+    res.status(500).json({
       success: false,
 
       error: "Failed to create booking",
