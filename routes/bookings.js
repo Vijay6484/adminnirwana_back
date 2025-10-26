@@ -541,7 +541,7 @@ router.post("/offline", async (req, res) => {
       coupons: coupon || "",
       discount: discount || "",
       full_amount: full_amount || "",
-      accommodation_type: acc.type || "resort",
+      // accommodation_type: acc.type || "Cottage",
     });
 
     res.json({
@@ -749,7 +749,7 @@ async function sendPdfEmail(params) {
     rooms,
     ownerName,
     ownerPhone,
-    accommodation_type,
+    // accommodation_type,
 
   } = params;
 
