@@ -540,6 +540,7 @@ router.post("/offline", async (req, res) => {
       coupons: coupon || "",
       discount: discount || "",
       full_amount: full_amount || "",
+      accommodation_type:"Cottage",
     });
 
     res.json({
