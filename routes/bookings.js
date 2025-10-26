@@ -492,37 +492,37 @@ router.post("/offline", async (req, res) => {
     const remainingAmount = booking.total_amount - booking.advance_amount;
 
     await sendPdfEmail({
-      email: booking.guest_email,
+      email: booking.guest_email || "",
 
-      name: booking.guest_name,
+      name: booking.guest_name || "",
 
-      BookingId: booking.id,
+      BookingId: booking.id || "",
 
-      BookingDate: formatDate(booking.created_at),
+      BookingDate: formatDate(booking.created_at) || "",
 
-      CheckinDate: formatDate(booking.check_in),
+      CheckinDate: formatDate(booking.check_in) || "",
 
-      CheckoutDate: formatDate(booking.check_out),
+      CheckoutDate: formatDate(booking.check_out) || "",
 
-      totalPrice: booking.total_amount,
+      totalPrice: booking.total_amount || "",
 
-      advancePayable: booking.advance_amount,
+      advancePayable: booking.advance_amount || "",
 
-      remainingAmount: remainingAmount.toFixed(2),
+      remainingAmount: remainingAmount.toFixed(2) || "",
 
-      mobile: booking.guest_phone,
+      mobile: booking.guest_phone || "",
 
-      totalPerson: booking.adults + booking.children,
+      totalPerson: booking.adults + booking.children || "",
 
-      adult: booking.adults,
+      adult: booking.adults || "",
 
-      child: booking.children,
+      child: booking.children || "",
 
-      vegCount: booking.food_veg,
+      vegCount: booking.food_veg || "",
 
-      nonvegCount: booking.food_nonveg,
+      nonvegCount: booking.food_nonveg || "",
 
-      joinCount: booking.food_jain,
+      joinCount: booking.food_jain || "",
 
       accommodationName: booking.accommodation_name || "",
 
@@ -540,7 +540,7 @@ router.post("/offline", async (req, res) => {
       coupons: coupon || "",
       discount: discount || "",
       full_amount: full_amount || "",
-	 accommodation_type : "cottage"
+	    accommodation_type : "cottage" || ""
     });
 
     res.json({
