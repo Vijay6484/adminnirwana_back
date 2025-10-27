@@ -311,11 +311,9 @@ router.post("/", async (req, res) => {
 });
 
 router.post("/offline", async (req, res) => {
-  const connection = await pool.getConnection();
+  let connection;
 
   try {
-    await connection.beginTransaction();
-
     const {
       guest_name,
       guest_email,
@@ -361,6 +359,17 @@ router.post("/offline", async (req, res) => {
         });
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(guest_email)) {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          error: "Invalid email format",
+        });
+    }
+
     // Validate food count vs guest count
 
     const totalGuests = adults + children;
@@ -398,6 +407,26 @@ router.post("/offline", async (req, res) => {
         .json({
           success: false,
           error: "Must have at least 1 adult and 1 room",
+        });
+    }
+
+    // Get connection after all validations pass
+    connection = await pool.getConnection();
+    await connection.beginTransaction();
+
+    // Validate accommodation exists
+    const [[accommodationCheck]] = await connection.execute(
+      `SELECT id, type FROM accommodations WHERE id = ?`,
+      [accommodation_id]
+    );
+
+    if (!accommodationCheck) {
+      await connection.rollback();
+      return res
+        .status(404)
+        .json({
+          success: false,
+          error: "Accommodation not found",
         });
     }
 
@@ -449,12 +478,12 @@ router.post("/offline", async (req, res) => {
 
     // Fetch booking details with accommodation
 
-    const [[booking]] = await connection.execute(
+    const [bookingRows] = await connection.execute(
       `
 
       SELECT b.*, a.name AS accommodation_name, a.address AS accommodation_address,
 
-             a.latitude, a.longitude, a.owner_id
+             a.latitude, a.longitude, a.owner_id, a.type AS accommodation_type
 
       FROM bookings b
 
@@ -464,10 +493,19 @@ router.post("/offline", async (req, res) => {
       [booking_id]
     );
 
+    if (!bookingRows || bookingRows.length === 0) {
+      await connection.rollback();
+      return res
+        .status(500)
+        .json({
+          success: false,
+          error: "Failed to retrieve booking details",
+        });
+    }
 
+    const booking = bookingRows[0];
 
-
-    // Original code context: Fetching owner details for a booking
+    // Fetching owner details for a booking
     const [rows] = await connection.execute(
       `SELECT email, phoneNumber, name FROM users WHERE id = ?`,
       [booking.owner_id]
@@ -477,10 +515,10 @@ router.post("/offline", async (req, res) => {
     const ownerName = user.name;
     const ownerNumber = user.phoneNumber;
 
+    // Commit the transaction before sending email
+    await connection.commit();
 
-
-    
-
+    // Send email after successful commit (outside transaction)
     const formatDate = (dateStr) => {
       const d = new Date(dateStr);
 
@@ -491,59 +529,64 @@ router.post("/offline", async (req, res) => {
 
     const remainingAmount = booking.total_amount - booking.advance_amount;
 
-    await sendPdfEmail({
-      email: booking.guest_email || "",
+    // Send email outside transaction to avoid blocking
+    try {
+      await sendPdfEmail({
+        email: booking.guest_email || "",
 
-      name: booking.guest_name || "",
+        name: booking.guest_name || "",
 
-      BookingId: booking.id || "",
+        BookingId: booking.id || "",
 
-      BookingDate: formatDate(booking.created_at) || "",
+        BookingDate: formatDate(booking.created_at) || "",
 
-      CheckinDate: formatDate(booking.check_in) || "",
+        CheckinDate: formatDate(booking.check_in) || "",
 
-      CheckoutDate: formatDate(booking.check_out) || "",
+        CheckoutDate: formatDate(booking.check_out) || "",
 
-      totalPrice: booking.total_amount || "",
+        totalPrice: booking.total_amount || "",
 
-      advancePayable: booking.advance_amount || "",
+        advancePayable: booking.advance_amount || "",
 
-      remainingAmount: remainingAmount.toFixed(2) || "",
+        remainingAmount: remainingAmount.toFixed(2) || "",
 
-      mobile: booking.guest_phone || "",
+        mobile: booking.guest_phone || "",
 
-      totalPerson: booking.adults + booking.children || "",
+        totalPerson: booking.adults + booking.children || "",
 
-      adult: booking.adults || "",
+        adult: booking.adults || "",
 
-      child: booking.children || "",
+        child: booking.children || "",
 
-      vegCount: booking.food_veg || "",
+        vegCount: booking.food_veg || "",
 
-      nonvegCount: booking.food_nonveg || "",
+        nonvegCount: booking.food_nonveg || "",
 
-      joinCount: booking.food_jain || "",
+        joinCount: booking.food_jain || "",
 
-      accommodationName: booking.accommodation_name || "",
+        accommodationName: booking.accommodation_name || "",
 
-      accommodationAddress: booking.accommodation_address || "",
+        accommodationAddress: booking.accommodation_address || "",
 
-      latitude: booking.latitude || "",
+        latitude: booking.latitude || "",
 
-      longitude: booking.longitude || "",
+        longitude: booking.longitude || "",
 
-      ownerEmail: ownerEmail || "",
-      ownerName: ownerName || "",
-      ownerPhone: ownerNumber || "",
+        ownerEmail: ownerEmail || "",
+        ownerName: ownerName || "",
+        ownerPhone: ownerNumber || "",
 
-      rooms: booking.rooms || "",
-      coupons: coupon || "",
-      discount: discount || "0",
-      full_amount: full_amount || "",
-	    accommodation_type : "resort"
-    });
+        rooms: booking.rooms || "",
+        coupons: coupon || "",
+        discount: discount || "0",
+        full_amount: full_amount || "",
+        accommodation_type: booking.accommodation_type || "resort"
+      });
+    } catch (emailError) {
+      console.error("Email sending failed (booking already saved):", emailError);
+      // Don't fail the request if email fails - booking is already saved
+    }
 
-    await connection.commit();
     res.json({
       success: true,
 
@@ -554,7 +597,13 @@ router.post("/offline", async (req, res) => {
       },
     });
   } catch (error) {
-    await connection.rollback();
+    if (connection) {
+      try {
+        await connection.rollback();
+      } catch (rollbackError) {
+        console.error("Rollback error:", rollbackError);
+      }
+    }
 
     console.error("Error creating booking:", error);
 
@@ -567,7 +616,9 @@ router.post("/offline", async (req, res) => {
         process.env.NODE_ENV === "development" ? error.message : undefined,
     });
   } finally {
-    connection.release();
+    if (connection) {
+      connection.release();
+    }
   }
 });
 
