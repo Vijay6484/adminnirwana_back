@@ -540,7 +540,7 @@ router.post("/offline", async (req, res) => {
       coupons: coupon || "",
       discount: discount || "0",
       full_amount: full_amount || "",
-	    accommodation_type : booking.accommodation_type || "resort"
+	    accommodation_type : "resort"
     });
 
     await connection.commit();
