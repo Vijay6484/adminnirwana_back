@@ -99,6 +99,9 @@ router.get("/", async (req, res) => {
 
         b.advance_amount,
 
+        b.Discount,
+        b.coupon_used,
+
         b.payment_status,
 
         b.payment_txn_id,
