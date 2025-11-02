@@ -181,6 +181,7 @@ router.post("/", async (req, res) => {
 
       advance_amount = 0,
       coupon_code = 0,
+      discount = 0,
       payment_method = "payu",
     } = req.body;
 
@@ -282,7 +283,7 @@ router.post("/", async (req, res) => {
         payment_txn_id,
         new Date(),
         coupon_code || null,
-        null,
+        discount || 0,
       ]
     );
 
@@ -3211,7 +3212,7 @@ router.post("/success/verify/:txnid", async (req, res) => {
     const ownerEmail = user.email;
     const ownerName = user.name;
     const ownerMobile = user.phoneNumber;
-
+    const totalPrice = (bk.total_amount - bk.discount).toFixed(2);
 
 
       // If you want to enable email sending later, you can log like this:
@@ -3225,7 +3226,7 @@ router.post("/success/verify/:txnid", async (req, res) => {
           BookingDate: formattedDate,
           CheckinDate: formatDate(bk.check_in),
           CheckoutDate: formatDate(bk.check_out),
-          totalPrice: (bk.total_amount - bk.discount),
+          totalPrice: totalPrice,
           advancePayable: bk.advance_amount,
           remainingAmount: remainingAmount.toFixed(2),
           mobile: bk.guest_phone,
