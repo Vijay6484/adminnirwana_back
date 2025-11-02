@@ -3194,7 +3194,7 @@ router.post("/success/verify/:txnid", async (req, res) => {
       console.log("📧 Guest email:", recipientEmail);
 
       const [accommodations] = await pool.execute(`
-        SELECT name, address, latitude, longitude, owner_id 
+        SELECT name, address, latitude, longitude, owner_id, type 
         FROM accommodations WHERE id = ?`,
         [bk.accommodation_id]
       );
@@ -3207,15 +3207,15 @@ router.post("/success/verify/:txnid", async (req, res) => {
       console.log("👤 Owner ID:", owner_id);
 
       const [users] = await pool.execute(`SELECT email,name,phoneNumber FROM users WHERE id = ?`, [
-      owner_id,
-    ]);
+        owner_id,
+      ]);
 
-    const user = users[0] || {};
+      const user = users[0] || {};
 
-    const ownerEmail = user.email;
-    const ownerName = user.name;
-    const ownerMobile = user.phoneNumber;
-    const totalPrice = (bk.total_amount - bk.discount).toFixed(2);
+      const ownerEmail = user.email;
+      const ownerName = user.name;
+      const ownerMobile = user.phoneNumber;
+      const totalPrice = (bk.total_amount - (bk.Discount || 0)).toFixed(2);
 
 
       // If you want to enable email sending later, you can log like this:
@@ -3249,7 +3249,7 @@ router.post("/success/verify/:txnid", async (req, res) => {
           rooms: bk.rooms || 0,
           coupons: bk.coupon_used || 0,
           full_amount: bk.total_amount || 0,
-          discount: bk.Discount || 0,
+          discount: (bk.Discount || 0).toFixed(2),
           accommodation_type: acc.type || "resort",
         });
         console.log("✅ Confirmation email sent to:", recipientEmail);
