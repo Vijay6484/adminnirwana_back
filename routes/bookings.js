@@ -3285,7 +3285,7 @@ router.get("/details/:txnid", async (req, res) => {
     const [bookings] = await pool.execute(
       `SELECT guest_email, id, guest_name, guest_phone, rooms, adults, children, food_veg, food_nonveg,
 
-              food_jain, check_in, check_out, total_amount, advance_amount, accommodation_id 
+              food_jain, check_in, check_out, total_amount, advance_amount, accommodation_id, Discount, coupon_used
 
        FROM bookings 
 
