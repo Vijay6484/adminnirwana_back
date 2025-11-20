@@ -3352,6 +3352,175 @@ router.get("/details/:txnid", async (req, res) => {
   }
 });
 
+// POST /admin/bookings/manualMailer - Manually send email using transaction ID
+router.post("/manualMailer", async (req, res) => {
+  try {
+    const { txn_id } = req.body;
+
+    if (!txn_id) {
+      return res.status(400).json({
+        success: false,
+        error: "Transaction ID (txn_id) is required",
+      });
+    }
+
+    // Step 1: Fetch booking by payment_txn_id
+    const [bookings] = await pool.execute(
+      `SELECT guest_email, id, guest_name, guest_phone, rooms, adults, children, 
+             food_veg, food_nonveg, food_jain, check_in, check_out, 
+             total_amount, advance_amount, coupon_used, Discount, accommodation_id, created_at
+       FROM bookings 
+       WHERE payment_txn_id = ?`,
+      [txn_id]
+    );
+
+    if (bookings.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "Booking not found with the provided transaction ID",
+      });
+    }
+
+    const booking = bookings[0];
+
+    // Step 2: Fetch accommodation details
+    const [accommodations] = await pool.execute(
+      `SELECT name, address, latitude, longitude, owner_id, type 
+       FROM accommodations 
+       WHERE id = ?`,
+      [booking.accommodation_id]
+    );
+
+    if (accommodations.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "Accommodation not found",
+      });
+    }
+
+    const accommodation = accommodations[0];
+    const owner_id = accommodation.owner_id;
+
+    // Step 3: Fetch owner/user details
+    const [users] = await pool.execute(
+      `SELECT email, name, phoneNumber 
+       FROM users 
+       WHERE id = ?`,
+      [owner_id]
+    );
+
+    if (users.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "Owner not found",
+      });
+    }
+
+    const user = users[0];
+    const ownerEmail = user.email || "";
+    const ownerName = user.name || "";
+    const ownerMobile = user.phoneNumber || "";
+
+    // Step 4: Format dates
+    const formatDate = (dateValue) => {
+      if (!dateValue) return "Invalid date";
+      try {
+        const date = new Date(dateValue);
+        if (isNaN(date.getTime())) throw new Error("Invalid date");
+        return format(date, "dd/MM/yyyy");
+      } catch (e) {
+        console.error("❌ Invalid date format:", dateValue);
+        return "Invalid date";
+      }
+    };
+
+    // Step 5: Calculate amounts
+    const remainingAmount =
+      parseFloat(booking.total_amount) - parseFloat(booking.advance_amount);
+    const totalPrice = (booking.total_amount - (booking.Discount || 0)).toFixed(2);
+
+    // Format booking date (YYYY-MM-DD format, same as success/verify endpoint)
+    const bookingDateObj = booking.created_at ? new Date(booking.created_at) : new Date();
+    const bookingDay = String(bookingDateObj.getDate()).padStart(2, "0");
+    const bookingMonth = String(bookingDateObj.getMonth() + 1).padStart(2, "0");
+    const bookingYear = bookingDateObj.getFullYear();
+    const formattedBookingDate = `${bookingYear}-${bookingMonth}-${bookingDay}`;
+
+    // Step 6: Send email using the same template
+    const recipientEmail = booking.guest_email?.trim();
+
+    if (!recipientEmail) {
+      return res.status(400).json({
+        success: false,
+        error: "Guest email not found for this booking",
+      });
+    }
+
+    console.log("🚀 Attempting to send manual email for transaction:", txn_id);
+
+    try {
+      await sendPdfEmail({
+        email: recipientEmail,
+        name: booking.guest_name || "",
+        BookingId: booking.id || "",
+        BookingDate: formattedBookingDate,
+        CheckinDate: formatDate(booking.check_in) || "",
+        CheckoutDate: formatDate(booking.check_out) || "",
+        totalPrice: totalPrice,
+        advancePayable: booking.advance_amount || "",
+        remainingAmount: remainingAmount.toFixed(2),
+        mobile: booking.guest_phone || "",
+        totalPerson: (booking.adults || 0) + (booking.children || 0),
+        adult: booking.adults || "",
+        child: booking.children || "",
+        vegCount: booking.food_veg || "",
+        nonvegCount: booking.food_nonveg || "",
+        joinCount: booking.food_jain || "",
+        accommodationName: accommodation.name || "",
+        accommodationAddress: accommodation.address || "",
+        latitude: accommodation.latitude || "",
+        longitude: accommodation.longitude || "",
+        ownerEmail: ownerEmail,
+        ownerName: ownerName,
+        ownerPhone: ownerMobile,
+        rooms: booking.rooms || 0,
+        coupons: booking.coupon_used || "",
+        full_amount: booking.total_amount || 0,
+        discount: (booking.Discount || 0).toFixed(2),
+        accommodation_type: accommodation.type || "resort",
+      });
+
+      console.log("✅ Manual email sent successfully to:", recipientEmail);
+
+      return res.json({
+        success: true,
+        message: "Email sent successfully",
+        data: {
+          email: recipientEmail,
+          booking_id: booking.id,
+          transaction_id: txn_id,
+        },
+      });
+    } catch (emailError) {
+      console.error("❌ Email sending failed:", emailError);
+      return res.status(500).json({
+        success: false,
+        error: "Failed to send email",
+        details:
+          process.env.NODE_ENV === "development" ? emailError.message : undefined,
+      });
+    }
+  } catch (error) {
+    console.error("❌ Manual mailer error:", error);
+    return res.status(500).json({
+      success: false,
+      error: "Internal server error",
+      details:
+        process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
+});
+
 // PUT /admin/bookings/:id/status - Manually update payment status
 
 router.put("/:id/status", async (req, res) => {
