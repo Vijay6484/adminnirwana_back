@@ -107,9 +107,8 @@ router.get("/", async (req, res) => {
       ? `WHERE ${whereConditions.join(' AND ')}`
       : '';
 
-    const [bookings] = await pool.execute(
-      `
-
+    // Main query
+    const bookingsQuery = `
       SELECT 
 
         b.id,
