@@ -58,9 +58,54 @@ bookingCleanup();
 
 router.get("/", async (req, res) => {
   try {
-    const { page = 1, limit = 20 } = req.query;
+    const { 
+      page = 1, 
+      limit = 20,
+      search,
+      payment_status,
+      status,
+      start_date,
+      end_date
+    } = req.query;
 
-    const offset = (page - 1) * limit;
+    const offset = (parseInt(page) - 1) * parseInt(limit);
+
+    // Build WHERE clause dynamically
+    let whereConditions = [];
+    let queryParams = [];
+
+    // Search filter - search in guest name, email, phone, booking ID, payment_txn_id
+    if (search) {
+      whereConditions.push(`(
+        b.guest_name LIKE ? OR 
+        b.guest_email LIKE ? OR 
+        b.guest_phone LIKE ? OR 
+        b.payment_txn_id LIKE ? OR
+        CAST(b.id AS CHAR) LIKE ?
+      )`);
+      const searchPattern = `%${search}%`;
+      queryParams.push(searchPattern, searchPattern, searchPattern, searchPattern, searchPattern);
+    }
+
+    // Payment status filter
+    if (payment_status) {
+      whereConditions.push('b.payment_status = ?');
+      queryParams.push(payment_status);
+    }
+
+    // Date range filter - check_in date range
+    if (start_date) {
+      whereConditions.push('DATE(b.check_in) >= ?');
+      queryParams.push(start_date);
+    }
+    if (end_date) {
+      whereConditions.push('DATE(b.check_in) <= ?');
+      queryParams.push(end_date);
+    }
+
+    const whereClause = whereConditions.length > 0 
+      ? `WHERE ${whereConditions.join(' AND ')}`
+      : '';
 
     const [bookings] = await pool.execute(
       `
@@ -112,19 +157,29 @@ router.get("/", async (req, res) => {
 
 
       FROM bookings b
-
       LEFT JOIN accommodations a ON b.accommodation_id = a.id
-
+      ${whereClause}
       ORDER BY b.created_at DESC
-
       LIMIT ? OFFSET ?
+    `;
 
-    `,
-      [parseInt(limit), parseInt(offset)]
+    // Count query for pagination
+    const countQuery = `
+      SELECT COUNT(*) as count 
+      FROM bookings b
+      LEFT JOIN accommodations a ON b.accommodation_id = a.id
+      ${whereClause}
+    `;
+
+    // Execute queries
+    const [bookings] = await pool.execute(
+      bookingsQuery,
+      [...queryParams, parseInt(limit), parseInt(offset)]
     );
 
     const [[{ count }]] = await pool.execute(
-      "SELECT COUNT(*) as count FROM bookings"
+      countQuery,
+      queryParams
     );
 
     res.json({
@@ -139,7 +194,7 @@ router.get("/", async (req, res) => {
 
         limit: parseInt(limit),
 
-        totalPages: Math.ceil(count / limit),
+        totalPages: Math.ceil(count / parseInt(limit)),
       },
     });
   } catch (error) {
@@ -3354,6 +3409,7 @@ router.get("/details/:txnid", async (req, res) => {
 
 // POST /admin/bookings/manualMailer - Manually send email using transaction ID
 router.post("/manualMailer", async (req, res) => {
+
   try {
     const { txn_id } = req.body;
 
