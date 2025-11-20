@@ -1283,7 +1283,7 @@ async function sendPdfEmail(params) {
 
                             style="font-size:0pt; line-height:0pt; text-align:right;background:#ffffff;padding-right: 6px;">
 
-                            <img src="https://instagram.fpnq7-8.fna.fbcdn.net/v/t51.2885-19/283634291_534556971515568_864457084658693403_n.jpg?efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby43NjguYzIifQ&_nc_ht=instagram.fpnq7-8.fna.fbcdn.net&_nc_cat=100&_nc_oc=Q6cZ2QFu1vjoUJQ4r4JrNEQzOTB3FdYRjq_lyayqvlpNMs6hkEuCI4CgZVgwNHU2CncRvc5K5T9FR1FQxba0o_2fLJvU&_nc_ohc=FgYyB-Jq5r4Q7kNvwHcqfCh&_nc_gid=unsrLNRkWgcF1hzi4QyV6Q&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfdSgRPdYKpZyIA0n8Co8BpMwTNHMgQgBN5eu5_205ZVeA&oe=68EBBDE7&_nc_sid=7a9f4b" width="auto"
+                            <img src="https://nirwanastays.com/logo-dark.png" width="auto"
 
                               height="55" mc:edit="image_2" style="max-height:55px;" border="0" alt="Logo" />
 
@@ -2412,7 +2412,7 @@ async function sendPdfEmail(params) {
 
                               style="font-size:0pt; line-height:0pt; text-align:right;background:#ffffff;padding-right: 6px;">
 
-                              <img src="https://instagram.fpnq7-8.fna.fbcdn.net/v/t51.2885-19/283634291_534556971515568_864457084658693403_n.jpg?efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby43NjguYzIifQ&_nc_ht=instagram.fpnq7-8.fna.fbcdn.net&_nc_cat=100&_nc_oc=Q6cZ2QFu1vjoUJQ4r4JrNEQzOTB3FdYRjq_lyayqvlpNMs6hkEuCI4CgZVgwNHU2CncRvc5K5T9FR1FQxba0o_2fLJvU&_nc_ohc=FgYyB-Jq5r4Q7kNvwHcqfCh&_nc_gid=unsrLNRkWgcF1hzi4QyV6Q&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfdSgRPdYKpZyIA0n8Co8BpMwTNHMgQgBN5eu5_205ZVeA&oe=68EBBDE7&_nc_sid=7a9f4b" width="auto"
+                                <img src="https://nirwanastays.com/logo-dark.png" width="auto"
 
                                 height="55" mc:edit="image_2" style="max-height:55px;" border="0" alt="Logo" />
 

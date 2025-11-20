@@ -41,6 +41,9 @@ app.use(cors({
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
+// Serve uploaded files
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Make safeParse globally available
 app.use((req, res, next) => {
   req.safeParse = safeParse;
@@ -133,6 +136,9 @@ loadRoutes('./routes/ammenities', '/admin/amenities');
 loadRoutes('./routes/bookings', '/admin/bookings');
 loadRoutes('./routes/ratings', '/admin/ratings');
 loadRoutes('./routes/calendar', '/admin/calendar');
+loadRoutes('./routes/blogs', '/admin/blogs');
+// Public blog endpoints (for frontend)
+loadRoutes('./routes/blogs', '/api/blogs');
 
 // 404 Handler
 app.use((req, res) => {
